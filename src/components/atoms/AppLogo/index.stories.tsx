@@ -3,7 +3,7 @@ import AppLogo from './index';
 
 const meta = {
   title: 'Atoms/AppLogo',
-} as Meta<typeof AppLogo>;
+} satisfies Meta<typeof AppLogo>;
 
 export default meta;
 
