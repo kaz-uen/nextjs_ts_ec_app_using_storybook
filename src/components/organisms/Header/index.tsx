@@ -2,6 +2,11 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
+import {
+  SearchIcon,
+  PersonIcon,
+  ShoppingCartIcon
+} from '@/components/atoms/IconButton';
 
 const HeaderRoot = styled.header`
   height: 88px;
@@ -42,24 +47,44 @@ const Header = () => {
         <HeaderNav>
           <NavLink>
             <Link href="/">
-              <Anchor>Link</Anchor>
+              <Anchor>（ロゴ）</Anchor>
             </Link>
           </NavLink>
           <NavLink>
-            <Link href="/">
-              <Anchor>Link</Anchor>
+            <Link href="/search">
+              <Anchor>すべて</Anchor>
+            </Link>
+          </NavLink>
+          <NavLink>
+            <Link href="/search/clothes">
+              <Anchor>トップス</Anchor>
+            </Link>
+          </NavLink>
+          <NavLink>
+            <Link href="/search/book">
+              <Anchor>本</Anchor>
+            </Link>
+          </NavLink>
+          <NavLink>
+            <Link href="/search/shoes">
+              <Anchor>シューズ</Anchor>
             </Link>
           </NavLink>
         </HeaderNav>
         <HeaderNav>
           <NavLink>
-            <Link href="/">
-              <Anchor>Link</Anchor>
+            <Link href="/search">
+              <Anchor><SearchIcon /></Anchor>
             </Link>
           </NavLink>
           <NavLink>
-            <Link href="/">
-              <Anchor>Link</Anchor>
+            <Link href="/cart">
+              <Anchor><ShoppingCartIcon /></Anchor>
+            </Link>
+          </NavLink>
+          <NavLink>
+            <Link href="/signin">
+              <Anchor><PersonIcon /></Anchor>
             </Link>
           </NavLink>
         </HeaderNav>
