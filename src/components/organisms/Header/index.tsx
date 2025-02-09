@@ -30,6 +30,9 @@ const HeaderInner = styled.div`
     padding-right: 32px;
   }
 `
+const NavLink = styled.span`
+  display: inline;
+`
 
 const Nav = styled.nav.attrs({
   'aria-label': 'メインナビゲーション'
@@ -37,7 +40,7 @@ const Nav = styled.nav.attrs({
   height: 56px;
   display: flex;
   align-items: center;
-  & span:not(:first-child) {
+  & ${NavLink}:not(:first-child) {
     margin-left: 16px;
   }
 `
@@ -54,10 +57,6 @@ const Logo = styled.span`
   margin-right: 16px;
 `
 
-const NavLink = styled.span`
-  display: inline;
-`
-
 const Anchor = styled.span.attrs({
   'role': 'link'
 })`
@@ -65,6 +64,18 @@ const Anchor = styled.span.attrs({
     text-decoration: underline;
   }
 `
+
+const textNavItems = [
+  { href: '/search', label: 'すべて' },
+  { href: '/search/clothes', label: 'トップス' },
+  { href: '/search/book', label: '本' },
+  { href: '/search/shoes', label: 'シューズ' },
+] as const;
+
+const iconNavItems = [
+  { href: '/search', icon: SearchIcon },
+  { href: '/search/clothes', icon: ShoppingCartIcon },
+] as const;
 
 const Header = () => {
   // TODO: 後ほど実装
@@ -80,39 +91,23 @@ const Header = () => {
             </Link>
           </Logo>
           <SpNotShow>
-            <NavLink>
-              <Link href="/search">
-                <Anchor>すべて</Anchor>
-              </Link>
-            </NavLink>
-            <NavLink>
-              <Link href="/search/clothes">
-                <Anchor>トップス</Anchor>
-              </Link>
-            </NavLink>
-            <NavLink>
-              <Link href="/search/book">
-                <Anchor>本</Anchor>
-              </Link>
-            </NavLink>
-            <NavLink>
-              <Link href="/search/shoes">
-                <Anchor>シューズ</Anchor>
-              </Link>
-            </NavLink>
+            {textNavItems.map(({ href, label }) => (
+              <NavLink key={label}>
+                <Link href={href}>
+                  <Anchor>{label}</Anchor>
+                </Link>
+              </NavLink>
+            ))}
           </SpNotShow>
         </Nav>
         <Nav>
-          <NavLink>
-            <Link href="/search">
-              <Anchor><SearchIcon /></Anchor>
-            </Link>
-          </NavLink>
-          <NavLink>
-            <Link href="/cart">
-              <Anchor><ShoppingCartIcon /></Anchor>
-            </Link>
-          </NavLink>
+          {iconNavItems.map(({ href, icon: Icon }) => (
+            <NavLink key={href}>
+              <Link href={href}>
+                <Anchor><Icon /></Anchor>
+              </Link>
+            </NavLink>
+          ))}
           <NavLink>
             {authUser ? (
               // TODO:後で実装する
