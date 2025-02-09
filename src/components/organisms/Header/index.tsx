@@ -21,7 +21,9 @@ const HeaderInner = styled.div`
   padding-right: 32px;
 `
 
-const HeaderNav = styled.nav`
+const HeaderNav = styled.nav.attrs({
+  'aria-label': 'メインナビゲーション'
+})`
   height: 56px;
   display: flex;
   align-items: center;
@@ -34,13 +36,18 @@ const NavLink = styled.span`
   display: inline;
 `
 
-const Anchor = styled.span`
+const Anchor = styled.span.attrs({
+  'role': 'link'
+})`
   &:hover {
     text-decoration: underline;
   }
 `
 
 const Header = () => {
+  // TODO: 後ほど実装
+  const authUser = null;
+
   return (
     <HeaderRoot>
       <HeaderInner>
@@ -83,9 +90,20 @@ const Header = () => {
             </Link>
           </NavLink>
           <NavLink>
-            <Link href="/signin">
-              <Anchor><PersonIcon /></Anchor>
-            </Link>
+            {(() => {
+              if (authUser) {
+                // TODO:後で実装する
+                return (
+                  <span>アイコン</span>
+                )
+              } else {
+                return (
+                  <Link href="/signin">
+                    <Anchor><PersonIcon /></Anchor>
+                  </Link>
+                )
+              }
+            })()}
           </NavLink>
         </HeaderNav>
       </HeaderInner>
