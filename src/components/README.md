@@ -1,0 +1,1 @@
+Presentational Componentは見た目を実装するコンポーネント。Hooksを使った状態管理やAPIコールなどの副作用を実行する振る舞いはContainer Componentで実装するため、Presentational Componentは、Container Componentから表示に必要なデータを受け取る。
