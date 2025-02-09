@@ -9,27 +9,49 @@ import {
 } from '@/components/atoms/IconButton';
 
 const HeaderRoot = styled.header`
+  display: flex;
+  align-items: center;
   height: 88px;
-  padding: 16px 0;
+  padding: 8px 0;
   border-bottom: solid 1px #cdced2;
+  @media screen and (min-width: 768px) {
+    padding: 16px 0;
+  }
 `
 
 const HeaderInner = styled.div`
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+  @media screen and (min-width: 768px) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
 `
 
-const HeaderNav = styled.nav.attrs({
+const Nav = styled.nav.attrs({
   'aria-label': 'メインナビゲーション'
 })`
   height: 56px;
   display: flex;
   align-items: center;
-  & > span:not(:first-child) {
+  & span:not(:first-child) {
     margin-left: 16px;
   }
+`
+
+const SpNotShow = styled.div`
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
+`
+
+const Logo = styled.span`
+  display: inline-block;
+  margin-right: 16px;
 `
 
 const NavLink = styled.span`
@@ -51,34 +73,36 @@ const Header = () => {
   return (
     <HeaderRoot>
       <HeaderInner>
-        <HeaderNav>
-          <NavLink>
+        <Nav>
+          <Logo>
             <Link href="/">
               <Anchor>（ロゴ）</Anchor>
             </Link>
-          </NavLink>
-          <NavLink>
-            <Link href="/search">
-              <Anchor>すべて</Anchor>
-            </Link>
-          </NavLink>
-          <NavLink>
-            <Link href="/search/clothes">
-              <Anchor>トップス</Anchor>
-            </Link>
-          </NavLink>
-          <NavLink>
-            <Link href="/search/book">
-              <Anchor>本</Anchor>
-            </Link>
-          </NavLink>
-          <NavLink>
-            <Link href="/search/shoes">
-              <Anchor>シューズ</Anchor>
-            </Link>
-          </NavLink>
-        </HeaderNav>
-        <HeaderNav>
+          </Logo>
+          <SpNotShow>
+            <NavLink>
+              <Link href="/search">
+                <Anchor>すべて</Anchor>
+              </Link>
+            </NavLink>
+            <NavLink>
+              <Link href="/search/clothes">
+                <Anchor>トップス</Anchor>
+              </Link>
+            </NavLink>
+            <NavLink>
+              <Link href="/search/book">
+                <Anchor>本</Anchor>
+              </Link>
+            </NavLink>
+            <NavLink>
+              <Link href="/search/shoes">
+                <Anchor>シューズ</Anchor>
+              </Link>
+            </NavLink>
+          </SpNotShow>
+        </Nav>
+        <Nav>
           <NavLink>
             <Link href="/search">
               <Anchor><SearchIcon /></Anchor>
@@ -99,7 +123,7 @@ const Header = () => {
               </Link>
             )}
           </NavLink>
-        </HeaderNav>
+        </Nav>
       </HeaderInner>
     </HeaderRoot>
   )
