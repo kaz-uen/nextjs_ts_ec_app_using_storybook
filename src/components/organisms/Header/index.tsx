@@ -66,15 +66,15 @@ const Anchor = styled.span.attrs({
 `
 
 const textNavItems = [
-  { href: '/search', label: 'すべて' },
-  { href: '/search/clothes', label: 'トップス' },
-  { href: '/search/book', label: '本' },
-  { href: '/search/shoes', label: 'シューズ' },
+  { id: 'all', href: '/search', label: 'すべて' },
+  { id: 'clothes', href: '/search/clothes', label: 'トップス' },
+  { id: 'book', href: '/search/book', label: '本' },
+  { id: 'shoes', href: '/search/shoes', label: 'シューズ' },
 ] as const;
 
 const iconNavItems = [
-  { href: '/search', icon: SearchIcon },
-  { href: '/search/clothes', icon: ShoppingCartIcon },
+  { id: 'search', href: '/search', icon: SearchIcon },
+  { id: 'cart', href: '/search/clothes', icon: ShoppingCartIcon },
 ] as const;
 
 const Header = () => {
@@ -91,8 +91,8 @@ const Header = () => {
             </Link>
           </Logo>
           <SpNotShow>
-            {textNavItems.map(({ href, label }) => (
-              <NavLink key={label}>
+            {textNavItems.map(({ id, href, label }) => (
+              <NavLink key={id}>
                 <Link href={href}>
                   <Anchor>{label}</Anchor>
                 </Link>
@@ -101,8 +101,8 @@ const Header = () => {
           </SpNotShow>
         </Nav>
         <Nav>
-          {iconNavItems.map(({ href, icon: Icon }) => (
-            <NavLink key={href}>
+          {iconNavItems.map(({ id, href, icon: Icon }) => (
+            <NavLink key={id}>
               <Link href={href}>
                 <Anchor><Icon /></Anchor>
               </Link>
