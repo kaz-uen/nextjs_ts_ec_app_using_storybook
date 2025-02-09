@@ -3,10 +3,22 @@ import {
   ShoppingCart,
   Person,
 } from '@mui/icons-material';
-import SvgIcon from '@mui/material/SvgIcon';
+import { ElementType } from 'react';
 import styled from 'styled-components';
 
-const IconWrapper = styled.div`
+interface IconWrapperProps {
+  size: number;
+  cursor?: string;
+}
+
+interface IconButtonProps {
+  onClick?: React.MouseEventHandler<SVGAElement>;
+  className?: string;
+  color?: string;
+  size?: number;
+}
+
+const IconWrapper = styled.div<IconWrapperProps>`
   display: inline-block;
   font-size: ${({size}) => size}px;
   cursor: ${({ cursor }) => cursor ?? 'pointer'};
@@ -15,8 +27,8 @@ const IconWrapper = styled.div`
 /**
  * アイコンボタン
  */
-function withIconStyle(Icon) {
-  const IconWithStyle = (props) => {
+function withIconStyle(Icon: ElementType): React.ComponentType<IconButtonProps> {
+  const IconWithStyle = (props: IconButtonProps) => {
     const { onClick, className, size = 24, ...rest } = props;
     const cursor = onClick ? 'pointer' : '';
 
