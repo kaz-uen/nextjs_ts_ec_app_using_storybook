@@ -101,7 +101,7 @@ const Header = () => {
           </SpNotShow>
         </Nav>
         <Nav>
-          {iconNavItems.map(({ id, href, icon: Icon }) => (
+          {iconNavItems.map(({ id, href, icon: Icon }) => ( // iconプロパティはIconという新しい変数名で受け取る
             <NavLink key={id}>
               <Link href={href}>
                 <Anchor><Icon /></Anchor>
