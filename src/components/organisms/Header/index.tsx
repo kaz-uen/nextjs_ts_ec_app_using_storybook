@@ -90,20 +90,14 @@ const Header = () => {
             </Link>
           </NavLink>
           <NavLink>
-            {(() => {
-              if (authUser) {
-                // TODO:後で実装する
-                return (
-                  <span>アイコン</span>
-                )
-              } else {
-                return (
-                  <Link href="/signin">
-                    <Anchor><PersonIcon /></Anchor>
-                  </Link>
-                )
-              }
-            })()}
+            {authUser ? (
+              // TODO:後で実装する
+              <span>アイコン</span>
+            ): (
+              <Link href="/signin">
+                <Anchor><PersonIcon /></Anchor>
+              </Link>
+            )}
           </NavLink>
         </HeaderNav>
       </HeaderInner>
