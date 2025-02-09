@@ -1,0 +1,3 @@
+Container Componentは、Hooksを持たせて、状態を使って表示内容を切り替える、APIコールなどの副作用を実行するなどの振る舞いを実装する。
+また、コンテキストを参照し、Presentational Componentへ表示に必要なデータを渡す。
+Container Componentを用いることで、ページを実装する上でコードが複雑化することを防ぐ。
