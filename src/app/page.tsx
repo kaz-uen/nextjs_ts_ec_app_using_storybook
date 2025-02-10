@@ -6,7 +6,10 @@ import Intro from "@/components/organisms/Intro";
 export default function Home() {
   return (
     <Layout>
-      <Intro />
+      <Intro
+        title="タイトル"
+        description="テキストが入ります。テキストが入ります。テキストが入ります。"
+      />
     </Layout>
   );
 }

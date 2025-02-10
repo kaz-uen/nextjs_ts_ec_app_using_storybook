@@ -1,8 +1,13 @@
-"use client";
+'use client';
 
 import styled from 'styled-components';
 
-const IntroRoot = styled.div`
+interface IntroProps {
+  title: string;
+  description: string;
+}
+
+const IntroRoot = styled.section`
   background-color: #f2f2f2;
   display: flex;
   padding: 16px;
@@ -26,12 +31,12 @@ const Heading = styled.h1`
   font-size: 24px;
 `
 
-const Intro = () => {
+const Intro = ({ title, description }: IntroProps) => {
   return (
-    <IntroRoot>
+    <IntroRoot aria-labelledby='intro-title'>
       <IntroInner>
-        <Heading>タイトル</Heading>
-        <p>テキストが入ります</p>
+        <Heading id='intro-title'>{title}</Heading>
+        <p>{description}</p>
       </IntroInner>
     </IntroRoot>
   )
