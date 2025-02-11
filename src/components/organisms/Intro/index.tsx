@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { theme } from '@/themes';
 
 interface IntroProps {
   title: string;
@@ -8,7 +9,7 @@ interface IntroProps {
 }
 
 const IntroRoot = styled.section`
-  background-color: #f2f2f2;
+  background-color: ${theme.colors.primary};
   display: flex;
   padding: 16px;
 `
@@ -20,7 +21,7 @@ const IntroInner = styled.div`
   justify-content: space-between;
   flex-direction: column;
   margin-inline: auto;
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width:  ${theme.breakPoints.md}px) {
     flex-direction: row;
     align-items: center;
     max-width: 1040px;
@@ -28,7 +29,7 @@ const IntroInner = styled.div`
 `
 
 const Heading = styled.h1`
-  font-size: 24px;
+  font-size: ${theme.fontSizes.extraLarge}px;
 `
 
 const Intro = ({ title, description }: IntroProps) => {
