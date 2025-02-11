@@ -21,7 +21,7 @@ const IntroInner = styled.div`
   justify-content: space-between;
   flex-direction: column;
   margin-inline: auto;
-  @media screen and (min-width:  ${theme.breakPoints.md}px) {
+  @media screen and (min-width: ${theme.breakPoints.md}) {
     flex-direction: row;
     align-items: center;
     max-width: 1040px;
