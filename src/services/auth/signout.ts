@@ -12,20 +12,27 @@ import { ApiContext } from "@/types";
  */
 const signout = async (context: ApiContext): Promise<{ message: string }> => {
   // fetcherユーティリティ関数を使用してAPIを呼び出す
-  return await fetcher(
-    // サインアウトAPIのエンドポイントを作成
-    // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値の末尾にスラッシュが混在する可能性がある場合を考慮
-    `${context.apiRootUrl.replace(/\/$/g, '')}/auth/signout`,
-    {
-      // POSTメソッドを指定
-      method: 'POST',
-      // リクエストヘッダーを設定
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+  try {
+    return await fetcher(
+      // サインアウトAPIのエンドポイントを作成
+      // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値の末尾にスラッシュが混在する可能性がある場合を考慮
+      `${context.apiRootUrl.replace(/\/$/g, '')}/auth/signout`,
+      {
+        // POSTメソッドを指定
+        method: 'POST',
+        // リクエストヘッダーを設定
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }
       }
+    )
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`サインアウト処理に失敗しました: ${error.message}`)
     }
-  )
+    throw error;
+  }
 }
 
 export default signout;

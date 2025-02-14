@@ -10,11 +10,24 @@ import { useRouter } from "next/navigation";
 const SigninPage = () => {
   const router = useRouter();
 
-  // 認証後のイベントハンドラ（サインイン完了時のコールバック関数）
+  /**
+   * サインイン処理後のコールバック関数
+   * @param err - サインイン処理で発生したエラー（存在する場合）
+   */
   const handleSignin = async (err?: Error) => {
-    if (!err) { // エラーがない場合（サインイン成功時）
-      // サインイン後、トップページに遷移させる
-      await router.push('/');
+    try {
+      if (!err) { // エラーがない場合（サインイン成功時）
+        // サインイン後、トップページに遷移させる
+        await router.push('/');
+      } else { // エラーがある場合（サインイン失敗時）
+        // エラーログを出力した上で、ユーザーへの通知のためにエラーを投げる
+        console.error('サインインエラー：', err.message);
+        throw new Error(`サインインに失敗しました：${err.message}`);
+      }
+    } catch (e) {
+      // ナビゲーションエラーのハンドリング
+      console.error('エラーが発生しました：', e);
+      // TODO：ここでToastやアラートなどでユーザーに通知する処理を追加
     }
   }
 

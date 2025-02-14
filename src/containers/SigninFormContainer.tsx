@@ -2,6 +2,7 @@
 
 import { useAuthContext } from "@/contexts/AuthContext";
 import SigninForm from "@/components/organisms/SigninForm";
+import { useState } from "react";
 
 interface SigninFormContainerProps {
   onSignin: (error?: Error) => void;
@@ -13,9 +14,13 @@ interface SigninFormContainerProps {
 const SigninFormContainer = ({ onSignin }: SigninFormContainerProps) => {
   // 認証関連の機能を提供するコンテキストからsignin関数を取得
   const { signin } = useAuthContext();
+  // ローディング状態を管理
+  const [isLoading, setIsLoading] = useState(false);
 
   // サインインボタンを押された時のイベントハンドラ
   const handleSignin = async (username: string, password: string) => {
+    setIsLoading(true);
+
     try {
       // 認証APIを呼び出し
       await signin(username, password);
@@ -23,15 +28,20 @@ const SigninFormContainer = ({ onSignin }: SigninFormContainerProps) => {
       onSignin();
     } catch (err: unknown) {
       if (err instanceof Error) {
+        // エラーの種類に応じて適切なメッセージを設定
+        const errorMessage = err.message.includes('認証')
+          ? 'ユーザー名またはパスワードが正しくありません'
+          : 'サインインに失敗しました。時間をおいて再度お試しください';
         // エラー情報を親コンポーネントに通知
-        onSignin(err);
+        onSignin(new Error(errorMessage));
       }
     } finally {
       // 必要に応じて処理完了後の共通処理
+      setIsLoading(false);
     }
   }
 
-  return <SigninForm onSignin={handleSignin} />
+  return <SigninForm onSignin={handleSignin} isLoading={isLoading} />
 }
 
 export default SigninFormContainer;
