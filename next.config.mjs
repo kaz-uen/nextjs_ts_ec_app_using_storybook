@@ -14,10 +14,11 @@ const nextConfig = {
     return [
       {
         // source（転送元URL）を環境変数 NEXT_PUBLIC_API__BASE_PATH で定義。
-        // :match* はワイルドカード（ex. /api/proxy/*のようなRULをキャッチ）
+        // :path* はワイルドカード（例: /api/proxy/users/1 -> users/1 の部分がキャプチャされる）
         source: `${process.env.NEXT_PUBLIC_API_BASE_PATH}/:path*`,
         // destination（転送先URL）を API_BASE_URL に設定
-        // ex. http://localhost:8000 -> /api/proxy/users にリクエストすると http://localhost:8000/users に転送される
+        // 例: NEXT_PUBLIC_API_BASE_PATH=/api/proxy, API_BASE_URL=http://localhost:8000 の場合
+        // /api/proxy/users/1 へのリクエスト -> http://localhost:8000/users/1 に転送
         destination: `${process.env.API_BASE_URL}/:path*`,
       },
     ]
