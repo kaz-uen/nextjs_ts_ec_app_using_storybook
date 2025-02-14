@@ -27,7 +27,7 @@ const SigninForm = ({ onSignin, isLoading, error }: SigninFormProps) => {
   const onSubmit = (data: SigninFormData) => {
     const { username, password } = data;
     // onSigninが存在する場合のみ実行
-    onSignin && onSignin(username, password);
+    onSignin?.(username, password);
   }
 
   return (

@@ -5,7 +5,7 @@ import SigninForm from "@/components/organisms/SigninForm";
 import { useState } from "react";
 
 interface SigninFormContainerProps {
-  onSignin: (error?: Error) => void;
+  onSignin?: (error?: Error) => void;
 }
 
 /**
@@ -25,7 +25,7 @@ const SigninFormContainer = ({ onSignin }: SigninFormContainerProps) => {
       // 認証APIを呼び出し
       await signin(username, password);
       // 認証成功時、親コンポーネントのコールバックを呼び出し
-      onSignin();
+      onSignin?.();
     } catch (err: unknown) {
       if (err instanceof Error) {
         // エラーの種類に応じて適切なメッセージを設定
@@ -33,7 +33,7 @@ const SigninFormContainer = ({ onSignin }: SigninFormContainerProps) => {
           ? 'ユーザー名またはパスワードが正しくありません'
           : 'サインインに失敗しました。時間をおいて再度お試しください';
         // エラー情報を親コンポーネントに通知
-        onSignin(new Error(errorMessage));
+        onSignin?.(new Error(errorMessage));
       }
     } finally {
       // 必要に応じて処理完了後の共通処理
