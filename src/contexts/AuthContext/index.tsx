@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import signin from "@/services/auth/signin";
 import signout from "@/services/auth/signout";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import type { ApiContext, User } from '@/types';
 
 /**
@@ -27,7 +27,6 @@ interface AuthContextProviderProps {
  */
 const AuthContext = createContext<AuthContextType>({
   authUser: undefined,
-  // isLoading: false,
   signin: async () => Promise.resolve(),
   signout: async () => Promise.resolve(),
   mutate: async () => Promise.resolve(undefined),
@@ -47,6 +46,13 @@ export const AuthContextProvider = ({
 }: React.PropsWithChildren<AuthContextProviderProps>) => {
   // ユーザー情報を取得するSWRフック
   const { data, error, mutate } = useSWR<User>(`${context.apiRootUrl.replace(/\/$/g, '')}/users/me`);
+
+  // ユーザー情報の取得に失敗した場合のエラーハンドリング
+  useEffect(() => {
+    if (error) {
+      console.error('Failed to fetch user:', error);
+    }
+  }, [error]);
 
   // サインイン処理の実装
   const signinInternal = async (username: string, password: string) => {
