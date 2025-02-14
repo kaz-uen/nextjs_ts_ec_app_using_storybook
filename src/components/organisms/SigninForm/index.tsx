@@ -31,22 +31,32 @@ const SigninForm = ({ onSignin, isLoading, error }: SigninFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} aria-label='サインインフォーム'>
       <div>
+        <label htmlFor='username'>ユーザー名</label>
         <input
           type='text'
+          id='username'
           {...register('username', { required: 'ユーザー名は必須です' })}
           placeholder="ユーザー名"
+          aria-invalid={errors.username ? 'true' : 'false'}
+          disabled={isLoading}
         />
-        {errors.username && <span>{errors.username.message}</span>}
+        {errors.username && <span role='alert'>{errors.username.message}</span>}
+      </div>
+      <div>
+        <label htmlFor='password'>パスワード</label>
         <input
           type='password'
+          id='password'
           {...register('password', { required: 'パスワードは必須です' })}
           placeholder="パスワード"
+          aria-invalid={errors.password ? 'true' : 'false'}
+          disabled={isLoading}
         />
-        {errors.password && <span>{errors.password.message}</span>}
+        {errors.password && <span role='alert'>{errors.password.message}</span>}
       </div>
-      {error && <p>{error}</p>}
+      {error && <span role='alert'>{error}</span>}
       <button type='submit' disabled={isLoading}>ログイン</button>
     </form>
   )
