@@ -24,7 +24,8 @@ const signout = async (context: ApiContext): Promise<{ message: string }> => {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-        }
+        },
+        credentials: 'include'
       }
     )
   } catch (error) {
