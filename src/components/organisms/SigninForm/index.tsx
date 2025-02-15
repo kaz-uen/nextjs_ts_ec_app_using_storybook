@@ -24,6 +24,7 @@ const SigninForm = ({ onSignin, isLoading, error }: SigninFormProps) => {
     formState: { errors } // バリデーションエラー情報
   } = useForm<SigninFormData>();
 
+  // フォーム送信時の処理
   const onSubmit = (data: SigninFormData) => {
     const { username, password } = data;
     // onSigninが存在する場合のみ実行
@@ -39,8 +40,8 @@ const SigninForm = ({ onSignin, isLoading, error }: SigninFormProps) => {
           id='username'
           {...register('username', { required: 'ユーザー名は必須です' })}
           placeholder="ユーザー名"
-          aria-invalid={errors.username ? 'true' : 'false'}
-          disabled={isLoading}
+          aria-invalid={errors.username ? 'true' : 'false'} // フォーム要素の入力値が有効か無効かを示す。入力エラーを音声で通知
+          disabled={isLoading} // ローディング中は入力を無効化
         />
         {errors.username && <span role='alert'>{errors.username.message}</span>}
       </div>
@@ -51,8 +52,8 @@ const SigninForm = ({ onSignin, isLoading, error }: SigninFormProps) => {
           id='password'
           {...register('password', { required: 'パスワードは必須です' })}
           placeholder="パスワード"
-          aria-invalid={errors.password ? 'true' : 'false'}
-          disabled={isLoading}
+          aria-invalid={errors.password ? 'true' : 'false'} // フォーム要素の入力値が有効か無効かを示す。入力エラーを音声で通知
+          disabled={isLoading} // ローディング中は入力を無効化
         />
         {errors.password && <span role='alert'>{errors.password.message}</span>}
       </div>
