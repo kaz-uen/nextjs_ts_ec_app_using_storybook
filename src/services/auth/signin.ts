@@ -31,7 +31,7 @@ const signin = async (context: ApiContext, params: SigninParams): Promise<User> 
   try {
     const user = await fetcher(
       // サインインAPIのエンドポイントを作成
-      // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値の末尾にスラッシュが混在する可能性がある場合を考慮
+      // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値が"/"で終わる場合と終わらない場合の両方に対応
       `${context.apiRootUrl.replace(/\/$/g, '')}/auth/signin`,
       {
         // POSTメソッドを指定
@@ -46,14 +46,37 @@ const signin = async (context: ApiContext, params: SigninParams): Promise<User> 
       }
     );
 
-    // レスポンスからパスワード関連のフィールドを削除
-    const { password, ...safeUser } = user;
+    // レスポンスからパスワード関連のフィールドを削除（passwordは未使用変数）
+    // セキュリティのため、クライアントサイドではパスワード情報を保持しない
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...safeUser } = user;
+    // パスワードを除外したユーザー情報を返却
     return safeUser;
   } catch (error) {
     if (error instanceof Error) {
+      // 標準的なErrorオブジェクトの場合の処理
+      // error.messageプロパティに安全にアクセス可能
       throw new Error('サインインに失敗しました。認証情報を確認してください。');
     }
+    // Errorインスタンスでない場合（予期せぬエラーの場合はそのまま再スロー）
+    // 例：
+    // - nullやundefinedが投げられた場合
+    // - 文字列や数値が投げられた場合
+    // - カスタムエラーオブジェクトの場合
     throw error;
+
+    /**
+     * instanceof演算子を使用したエラー型の判定
+     *
+     * 1. error instanceof Error
+     *    - errorオブジェクトがErrorクラスのインスタンスかどうかを確認
+     *    - JavaScriptの標準エラーオブジェクトかどうかをチェック
+     *
+     * 2. なぜこのチェックが必要か
+     *    - catchで受け取るerrorの型は 'unknown' 型（TypeScriptの仕様）
+     *    - エラーオブジェクトの型を特定することで、安全にエラー情報にアクセス可能
+     *    - 予期せぬ形式のエラーに対する防御的なプログラミング
+     */
   }
 }
 

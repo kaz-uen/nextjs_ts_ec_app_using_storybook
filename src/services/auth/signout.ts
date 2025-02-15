@@ -15,7 +15,7 @@ const signout = async (context: ApiContext): Promise<{ message: string }> => {
   try {
     return await fetcher(
       // サインアウトAPIのエンドポイントを作成
-      // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値の末尾にスラッシュが混在する可能性がある場合を考慮
+      // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値が"/"で終わる場合と終わらない場合の両方に対応
       `${context.apiRootUrl.replace(/\/$/g, '')}/auth/signout`,
       {
         // POSTメソッドを指定
@@ -25,6 +25,7 @@ const signout = async (context: ApiContext): Promise<{ message: string }> => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
+        // クッキーを含めて送信（認証情報などのクッキーを送信するために必要）
         credentials: 'include'
       }
     )

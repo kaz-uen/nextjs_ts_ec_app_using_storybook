@@ -45,6 +45,7 @@ export const AuthContextProvider = ({
   children
 }: React.PropsWithChildren<AuthContextProviderProps>) => {
   // ユーザー情報を取得するSWRフック
+  // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値が"/"で終わる場合と終わらない場合の両方に対応
   const { data, error, mutate } = useSWR<User>(`${context.apiRootUrl.replace(/\/$/g, '')}/users/me`);
 
   // ユーザー情報の取得に失敗した場合のエラーハンドリング
