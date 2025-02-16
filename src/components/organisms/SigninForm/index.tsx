@@ -19,15 +19,19 @@ const FormGroup = styled.div`
 `
 
 const Input = styled.input`
-    border: 1px solid #cdced2;
+    border: 1px solid ${theme.colors.border};
     border-radius: 5px;
     padding: 11px 12px 12px 9px;
     box-sizing: border-box;
     outline: none;
     width: 100%;
     height: 38px;
-    font-size: 16px;
+    font-size: ${theme.fontSizes.medium}px;
     line-height: 19px;
+    &:focus {
+      border-color: ${theme.colors.primary};
+      box-shadow: 0 0 0 2px ${theme.colors.primary};
+    }
 `
 
 const Button = styled.button`

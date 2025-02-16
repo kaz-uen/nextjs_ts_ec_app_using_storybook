@@ -4,13 +4,14 @@ import Layout from "@/components/templates/Layout";
 import SigninFormContainer from "@/containers/SigninFormContainer";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
+import { theme } from "@/themes";
 
 const SigninFormRoot = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 16px;
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: ${theme.breakPoints.md}) {
     padding: 16px 0;
   }
 `
@@ -21,15 +22,15 @@ const SigninFormInner = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: ${theme.breakPoints.md}) {
   }
 `
 
 const Heading = styled.h1`
-  font-size: 18px;
+  font-size: ${theme.fontSizes.medium}px;
   margin-bottom: 16px;
-  @media screen and (min-width: 768px) {
-    font-size: 20px;
+  @media screen and (min-width: ${theme.breakPoints.md}) {
+    font-size: ${theme.fontSizes.mediumLarge}px;
   }
 `
 
