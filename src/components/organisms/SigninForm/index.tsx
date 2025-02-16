@@ -30,7 +30,7 @@ const Input = styled.input`
     line-height: 19px;
     &:focus {
       border-color: ${theme.colors.primary};
-      box-shadow: 0 0 0 2px ${theme.colors.primary};
+      box-shadow: 0 0 0 2px ${theme.colors.primary}33;
     }
 `
 
@@ -51,6 +51,10 @@ const Button = styled.button`
   opacity: 1;
   border-radius: 4px;
   border: none;
+  transition: opacity .2s;
+  &:hover {
+    opacity: .8;
+  }
 `
 
 interface SigninFormData {
