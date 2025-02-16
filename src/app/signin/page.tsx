@@ -3,6 +3,36 @@
 import Layout from "@/components/templates/Layout";
 import SigninFormContainer from "@/containers/SigninFormContainer";
 import { useRouter } from "next/navigation";
+import styled from "styled-components";
+import { theme } from "@/themes";
+
+const SigninFormRoot = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  @media screen and (min-width: ${theme.breakPoints.md}) {
+    padding: 16px 0;
+  }
+`
+
+const SigninFormInner = styled.div`
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  @media screen and (min-width: ${theme.breakPoints.md}) {
+  }
+`
+
+const Heading = styled.h1`
+  font-size: ${theme.fontSizes.medium}px;
+  margin-bottom: 16px;
+  @media screen and (min-width: ${theme.breakPoints.md}) {
+    font-size: ${theme.fontSizes.mediumLarge}px;
+  }
+`
 
 /**
  * 7. サインインページを作成
@@ -33,7 +63,12 @@ const SigninPage = () => {
 
   return (
     <Layout>
-      <SigninFormContainer onSignin={handleSignin} />
+      <SigninFormRoot>
+        <SigninFormInner>
+          <Heading>ログイン</Heading>
+          <SigninFormContainer onSignin={handleSignin} />
+        </SigninFormInner>
+      </SigninFormRoot>
     </Layout>
   )
 }
