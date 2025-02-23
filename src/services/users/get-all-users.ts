@@ -1,10 +1,16 @@
-import type { ApiContext } from "@/types";
+import type { ApiContext, User } from "@/types";
 import { fetcher } from "@/utils";
 
+/**
+ * ユーザーAPI（一覧取得）
+ * @param context APIコンテキスト
+ * @returns ユーザー一覧
+ */
 const getAllUsers = async (
   context: ApiContext
-) => {
-  const res = await fetcher(
+): Promise<User[]> => {
+  // 全ユーザー情報を取得するAPIエンドポイントにリクエスト
+  return await fetcher(
     `${context.apiRootUrl.replace(/\/$/g, '')}/users`,
     {
       next: { revalidate: 10 },
@@ -14,12 +20,6 @@ const getAllUsers = async (
       },
     }
   )
-
-  if (!res) {
-    throw new Error('Failed to fetch user data');
-  }
-
-  return res.json();
 }
 
 export default getAllUsers;

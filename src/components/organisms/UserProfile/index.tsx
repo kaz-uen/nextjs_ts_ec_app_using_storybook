@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 interface UserProfileProps {
   username: string;
+  description?: string;
 }
 
 const ProfileRoot = styled.div`
@@ -12,12 +13,18 @@ const ProfileRoot = styled.div`
 
 const UserName = styled.p`
   font-size: 16px;
+  font-weight: bold;
 `
 
-const UserProfile = ({ username }: UserProfileProps) => {
+const UserDescription = styled.p`
+  font-size: 16px;
+`
+
+const UserProfile = ({ username, description }: UserProfileProps) => {
   return (
     <ProfileRoot>
       <UserName>{username}</UserName>
+      <UserDescription>{description}</UserDescription>
     </ProfileRoot>
   )
 }

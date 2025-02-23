@@ -50,6 +50,7 @@ const UserProfileContainer = ({ userId, user }: UserProfileContainerProps) => {
   return (
     <UserProfile
       username={u.username}
+      description={u.description}
     />
   )
 }
