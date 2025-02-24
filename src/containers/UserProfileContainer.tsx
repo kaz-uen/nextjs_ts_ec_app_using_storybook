@@ -16,7 +16,6 @@ const context: ApiContext = {
 const UserProfileContainer = ({ userId, user }: UserProfileContainerProps) => {
   // 最新のユーザー情報を取得し、更新があった場合にはinitialで指定されているデータを上書きする
   const { user: u } = useUser(context, { id: userId, initial: user});
-  // console.log(u)
   /**
    * useUserの処理について
    *
