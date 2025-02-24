@@ -13,6 +13,12 @@ interface UseUser {
   isError?: boolean;
 }
 
+type ApiError = {
+  response?: {
+    status: number;
+  }
+}
+
 /**
  * ユーザーAPI（個別取得）のカスタムフック
  * @param context APIコンテキスト
@@ -30,7 +36,7 @@ const useUser = ( context: ApiContext, { id, initial }: UseUserProps): UseUser =
         // エラーの種類に応じて適切なメッセージを設定
         if (err instanceof TypeError) {
           console.error('ネットワークエラーが発生しました');
-        } else if (err.response?.status === 404) {
+        } else if ((err as ApiError).response?.status === 404) {
           console.error('ユーザーが見つかりませんでした');
         }
       }
