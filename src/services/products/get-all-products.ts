@@ -32,13 +32,13 @@ const getAllProducts = async (
   const path = `${context.apiRootUrl.replace(/\/$/g, '')}/products`
   const params = new URLSearchParams()
 
-  category && params.append('category', category)
-  conditions && conditions.forEach((condition) => params.append('condition', condition))
-  userId && params.append('owner.id', `${userId}`)
-  page && params.append('_page', `${page}`)
-  limit && params.append('_limit', `${limit}`)
-  sort && params.append('_sort', sort)
-  order && params.append('_order', order)
+  category?.toString() && params.append('category', category.toString());
+  conditions?.forEach((condition) => params.append('condition', condition));
+  userId?.toString() && params.append('owner.id', userId.toString());
+  page?.toString() && params.append('_page', page.toString());
+  limit?.toString() && params.append('_limit', limit.toString());
+  sort?.toString() && params.append('_sort', sort.toString());
+  order?.toString() && params.append('_order', order.toString());
   const query = params.toString()
 
   try {

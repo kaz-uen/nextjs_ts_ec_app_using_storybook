@@ -26,7 +26,13 @@ const useUser = ( context: ApiContext, { id, initial }: UseUserProps): UseUser =
       revalidateOnFocus: false,
       shouldRetryOnError: false,
       onError: (err) => {
-        console.error('Failed to fetch user:', err);
+        console.error('ユーザー情報の取得に失敗しました:', err);
+        // エラーの種類に応じて適切なメッセージを設定
+        if (err instanceof TypeError) {
+          console.error('ネットワークエラーが発生しました');
+        } else if (err.response?.status === 404) {
+          console.error('ユーザーが見つかりませんでした');
+        }
       }
     }
   );
