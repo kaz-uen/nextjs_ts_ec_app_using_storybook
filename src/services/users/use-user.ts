@@ -38,6 +38,8 @@ const useUser = ( context: ApiContext, { id, initial }: UseUserProps): UseUser =
           console.error('ネットワークエラーが発生しました');
         } else if ((err as ApiError).response?.status === 404) {
           console.error('ユーザーが見つかりませんでした');
+        } else {
+          console.error('予期せぬエラーが発生しました');
         }
       }
     }
