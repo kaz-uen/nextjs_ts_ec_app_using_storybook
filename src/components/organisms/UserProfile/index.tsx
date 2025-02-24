@@ -7,11 +7,15 @@ interface UserProfileProps {
   description?: string;
 }
 
-const ProfileRoot = styled.div`
+const ProfileRoot = styled.section`
   margin-bottom: 8px;
 `
 
-const UserName = styled.p`
+const ProfileInner = styled.article`
+  margin-inline: auto;
+`
+
+const UserName = styled.h1`
   font-size: 16px;
   font-weight: bold;
 `
@@ -22,9 +26,11 @@ const UserDescription = styled.p`
 
 const UserProfile = ({ username, description }: UserProfileProps) => {
   return (
-    <ProfileRoot>
-      <UserName>{username}</UserName>
-      <UserDescription>{description}</UserDescription>
+    <ProfileRoot aria-label="ユーザープロフィール">
+      <ProfileInner>
+        <UserName>{username}</UserName>
+        {description && <UserDescription>{description}</UserDescription>}
+      </ProfileInner>
     </ProfileRoot>
   )
 }

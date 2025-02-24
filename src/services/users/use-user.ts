@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import type { ApiContext, User } from "@/types";
+import { fetcher } from "@/utils";
 
 interface UseUserProps {
   id: number;
@@ -18,7 +19,17 @@ interface UseUser {
  * @returns ユーザーとAPI呼び出しの状態
  */
 const useUser = ( context: ApiContext, { id, initial }: UseUserProps): UseUser => {
-  const { data, error } = useSWR<User>(`${context.apiRootUrl.replace(/\/$/g, '')}/users/${id}`, );
+  const { data, error } = useSWR<User>(
+    `${context.apiRootUrl.replace(/\/$/g, '')}/users/${id}`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      onError: (err) => {
+        console.error('Failed to fetch user:', err);
+      }
+    }
+  );
 
   return {
     user: data ?? initial,

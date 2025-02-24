@@ -37,11 +37,16 @@ async function getUserData(userId: number) {
     apiRootUrl: process.env.API_BASE_URL || 'http://localhost:5000'
   }
 
-  // ユーザー情報と商品情報を取得
-  const user = await getUser(context, { id: userId });
-  const products = await getAllProducts(context, { userId });
+  try {
+    // ユーザー情報と商品情報を取得
+    const user = await getUser(context, { id: userId });
+    const products = await getAllProducts(context, { userId });
 
-  return { user, products };
+    return { user, products };
+  } catch (error) {
+    console.error('ユーザーデータの取得に失敗しました:', error);
+    throw error;
+  }
 }
 
 /**

@@ -10,16 +10,22 @@ const getAllUsers = async (
   context: ApiContext
 ): Promise<User[]> => {
   // 全ユーザー情報を取得するAPIエンドポイントにリクエスト
-  return await fetcher(
-    `${context.apiRootUrl.replace(/\/$/g, '')}/users`,
-    {
-      next: { revalidate: 10 },
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  try {
+    return await fetcher(
+      `${context.apiRootUrl.replace(/\/$/g, '')}/users`,
+      {
+        next: { revalidate: 10 },
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+  } catch (error) {
+    console.error('Failed to fetch users:', error);
+    throw new Error('ユーザー一覧の取得に失敗しました');
+  }
+
 }
 
 export default getAllUsers;

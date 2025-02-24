@@ -33,8 +33,7 @@ const getAllProducts = async (
   const params = new URLSearchParams()
 
   category && params.append('category', category)
-  conditions &&
-    conditions.forEach((condition) => params.append('condition', condition))
+  conditions && conditions.forEach((condition) => params.append('condition', condition))
   userId && params.append('owner.id', `${userId}`)
   page && params.append('_page', `${page}`)
   limit && params.append('_limit', `${limit}`)
@@ -42,12 +41,17 @@ const getAllProducts = async (
   order && params.append('_order', order)
   const query = params.toString()
 
-  return await fetcher(query.length > 0 ? `${path}?${query}` : path, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
+  try {
+    return await fetcher(query.length > 0 ? `${path}?${query}` : path, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+  } catch (error) {
+    console.error('商品データの取得に失敗しました:', error);
+    throw error;
+  }
 }
 
 export default getAllProducts;
