@@ -30,7 +30,8 @@ const Heading = styled.h2`
 
 const ProductList = styled.ul`
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
   margin-bottom: 32px;
 `
 
@@ -40,12 +41,20 @@ const ProductItem = styled.li`
 `
 
 const ProductImage = styled.img`
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  min-width: 160px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   background-color: gray;
 `
 
 const ProductName = styled.h3`
+  font-size: ${theme.fontSizes.small}px;
+`
+
+const ProductPrice = styled.span`
+  display: block;
+  text-align: right;
   font-size: ${theme.fontSizes.small}px;
 `
 
@@ -60,7 +69,7 @@ const HomePageContainer = ({ products }: HomePageContainerProps) => {
             <Link href={`/products/${p.id}`}>
               <ProductImage src={p.imageUrl} alt={p.title} />
               <ProductName>{p.title}</ProductName>
-              <span>{p.price}円</span>
+              <ProductPrice>{p.price.toLocaleString()}円</ProductPrice>
             </Link>
           </ProductItem>
         ))}
