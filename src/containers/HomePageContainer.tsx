@@ -5,6 +5,14 @@ import { theme } from "@/themes";
 import styled from "styled-components";
 import Link from "next/link";
 
+type HomePageContainerProps = {
+  products: {
+    clothesProducts: Product[];
+    bookProducts: Product[];
+    shoesProducts: Product[];
+  }
+}
+
 const Root = styled.div`
   display: flex;
   justify-content: center;
@@ -41,8 +49,7 @@ const ProductName = styled.h3`
   font-size: ${theme.fontSizes.small}px;
 `
 
-const HomePageContainer = ({ products }) => {
-  console.log(products)
+const HomePageContainer = ({ products }: HomePageContainerProps) => {
   const {clothesProducts, bookProducts, shoesProducts} = products;
 
   const renderProductCardCarousel = (products: Product[]) => {
@@ -51,7 +58,7 @@ const HomePageContainer = ({ products }) => {
         {products.map((p: Product, i: number) => (
           <ProductItem key={p.title}>
             <Link href={`/products/${p.id}`}>
-              <ProductImage src={p.imageUrl} />
+              <ProductImage src={p.imageUrl} alt={p.title} />
               <ProductName>{p.title}</ProductName>
               <span>{p.price}円</span>
             </Link>

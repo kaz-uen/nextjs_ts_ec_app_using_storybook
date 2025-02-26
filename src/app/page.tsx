@@ -10,16 +10,26 @@ const getProductData = async () => {
     apiRootUrl: process.env.API_BASE_URL || 'http://localhost:5000',
   }
 
-  const [clothesProducts, bookProducts, shoesProducts] = await Promise.all([
-    getAllProducts(context, { category: 'clothes', limit: 6, page: 1}),
-    getAllProducts(context, { category: 'book', limit: 6, page: 1}),
-    getAllProducts(context, { category: 'shoes', limit: 6, page: 1}),
-  ])
+  try {
+    const [clothesProducts, bookProducts, shoesProducts] = await Promise.all([
+      getAllProducts(context, { category: 'clothes', limit: 6, page: 1}),
+      getAllProducts(context, { category: 'book', limit: 6, page: 1}),
+      getAllProducts(context, { category: 'shoes', limit: 6, page: 1}),
+    ])
 
-  return {
-    clothesProducts,
-    bookProducts,
-    shoesProducts,
+    return {
+      clothesProducts,
+      bookProducts,
+      shoesProducts,
+    }
+  } catch (error) {
+    console.error('商品データの取得に失敗しました：', error);
+
+    return {
+      clothesProducts: [],
+      bookProducts: [],
+      shoesProducts: [],
+    }
   }
 }
 
