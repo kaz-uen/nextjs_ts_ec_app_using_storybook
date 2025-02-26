@@ -64,8 +64,8 @@ const HomePageContainer = ({ products }: HomePageContainerProps) => {
   const renderProductCardCarousel = (products: Product[]) => {
     return (
       <ProductList>
-        {products.map((p: Product, i: number) => (
-          <ProductItem key={p.title}>
+        {products.map((p: Product,) => (
+          <ProductItem key={p.id}>
             <Link href={`/products/${p.id}`}>
               <ProductImage src={p.imageUrl} alt={p.title} />
               <ProductName>{p.title}</ProductName>
