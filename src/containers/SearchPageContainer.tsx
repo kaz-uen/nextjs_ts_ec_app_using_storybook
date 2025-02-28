@@ -52,7 +52,7 @@ const SearchPageContainer = () => {
       params.append('condition', condition);
     });
 
-    router.push(`${window.location.pathname}?${params.toString()}`);
+    router.push(`?${params.toString()}`);
   }
 
   const onChange = useCallback(
@@ -63,8 +63,8 @@ const SearchPageContainer = () => {
         : selected.filter((v) => v !== value);
 
       setSelected(newSelected);
-      handleChange && handleChange(newSelected);
-    }, [selected])
+      handleChange?.(newSelected);
+    }, [selected, handleChange])
 
   const onClick = useCallback((name: string) => {
     const newSelected = selected.includes(name)
@@ -72,8 +72,8 @@ const SearchPageContainer = () => {
       : [...selected, name];
 
     setSelected(newSelected);
-    handleChange && handleChange(newSelected);
-  },[selected])
+    handleChange?.(newSelected);
+  },[selected, handleChange])
 
   return (
     <>
