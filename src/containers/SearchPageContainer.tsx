@@ -29,10 +29,11 @@ const items = [
 
 const SearchPageContainer = ({ params }: SearchPageProps) => {
   const router = useRouter();
-  // 商品の状態をクエリから取得
+  // 商品の状態をクエリから取得（配列）
   const searchParams = useSearchParams();
   const conditions = searchParams.getAll('condition') ?? [];
 
+  // 「商品の状態」のチェック状態を管理
   const [selected, setSelected] = useState(conditions);
 
   const handleChange = (newConditions: string[]) => {
@@ -47,21 +48,21 @@ const SearchPageContainer = ({ params }: SearchPageProps) => {
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.name;
-      console.log("value:", value)
       const newSelected = e.target.checked
         ? [...selected, value]
         : selected.filter((v) => v !== value);
 
       setSelected(newSelected);
-      handleChange(newSelected);
-    },
-    [selected]
-  )
+      handleChange && handleChange(newSelected);
+    }, [selected])
 
   const onClick = useCallback((name: string) => {
-    const newSelected = selected.includes(name) ? selected.filter(v => v !== name) : [...selected, name];
+    const newSelected = selected.includes(name)
+      ? selected.filter(v => v !== name)
+      : [...selected, name];
+
     setSelected(newSelected);
-    handleChange(newSelected);
+    handleChange && handleChange(newSelected);
   },[selected])
 
   return (
