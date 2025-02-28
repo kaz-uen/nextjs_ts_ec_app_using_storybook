@@ -2,6 +2,8 @@ import {
   Search,
   ShoppingCart,
   Person,
+  CheckBoxOutlineBlank,
+  CheckBox,
 } from '@mui/icons-material';
 import { ElementType } from 'react';
 import styled from 'styled-components';
@@ -50,3 +52,5 @@ function withIconStyle(Icon: ElementType): React.ComponentType<IconButtonProps> 
 export const SearchIcon = withIconStyle(Search);
 export const ShoppingCartIcon = withIconStyle(ShoppingCart);
 export const PersonIcon = withIconStyle(Person);
+export const CheckBoxOutlineBlankIcon = withIconStyle(CheckBoxOutlineBlank)
+export const CheckBoxIcon = withIconStyle(CheckBox)
