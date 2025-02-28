@@ -23,6 +23,8 @@ interface IconButtonProps {
 const IconWrapper = styled.div<IconWrapperProps>`
   display: inline-block;
   font-size: ${({size}) => size}px;
+  width: ${({size}) => size}px;
+  height: ${({size}) => size}px;
   cursor: ${({ cursor }) => cursor ?? 'pointer'};
 `
 

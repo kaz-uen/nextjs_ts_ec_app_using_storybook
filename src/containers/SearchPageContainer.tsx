@@ -1,25 +1,35 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   CheckBoxOutlineBlankIcon,
   CheckBoxIcon,
 } from '@/components/atoms/IconButton'
 import styled from "styled-components";
 import { useSearchParams, useRouter } from "next/navigation";
-
-type SearchPageProps = {
-  params: {
-    slug: string[];
-  }
-}
+import { theme } from "@/themes";
 
 const Aside = styled.aside`
   width: 200px;
 `
 
-const CheckBoxElement = styled.input`
+const CheckBoxElements = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const Label = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`
+
+const CheckBox = styled.input`
   display: none;
+`
+
+const Heading = styled.h2`
+  font-size: ${theme.fontSizes.mediumLarge}px;
 `
 
 const items = [
@@ -27,13 +37,13 @@ const items = [
   { label: '中古', name: 'used' },
 ];
 
-const SearchPageContainer = ({ params }: SearchPageProps) => {
+const SearchPageContainer = () => {
   const router = useRouter();
   // 商品の状態をクエリから取得（配列）
   const searchParams = useSearchParams();
   const conditions = searchParams.getAll('condition') ?? [];
 
-  // 「商品の状態」のチェック状態を管理
+  // 「商品の状態」のチェックボックスの状態を管理
   const [selected, setSelected] = useState(conditions);
 
   const handleChange = (newConditions: string[]) => {
@@ -68,24 +78,24 @@ const SearchPageContainer = ({ params }: SearchPageProps) => {
   return (
     <>
       <Aside>
-        <span>商品の状態</span>
+        <Heading>商品の状態</Heading>
         {items.map(({ label, name }) => (
-          <div key={name}>
-            <label htmlFor={name} onClick={() => onClick(name)}>
-              <CheckBoxElement
+          <CheckBoxElements key={name}>
+            <Label htmlFor={name} onClick={() => onClick(name)}>
+              <CheckBox
                 name={name}
                 type="checkbox"
                 checked={selected.includes(name)}
                 onChange={onChange}
               />
               {selected.includes(name) ? (
-                <CheckBoxIcon size={20} onClick={() => onClick(name)} />
+                <CheckBoxIcon size={20} />
               ) : (
-                <CheckBoxOutlineBlankIcon size={20} onClick={() => onClick(name)} />
+                <CheckBoxOutlineBlankIcon size={20} />
               )}
-              {label}
-            </label>
-          </div>
+              <span>{label}</span>
+            </Label>
+          </CheckBoxElements>
         ))}
       </Aside>
     </>
