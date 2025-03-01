@@ -13,9 +13,15 @@ const Aside = styled.aside`
   width: 200px;
 `
 
+const Heading = styled.h2`
+  font-size: ${theme.fontSizes.mediumLarge}px;
+  margin-bottom: 8px;
+`
+
 const CheckBoxElements = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 4px;
 `
 
 const Label = styled.label`
@@ -24,12 +30,12 @@ const Label = styled.label`
   cursor: pointer;
 `
 
-const CheckBox = styled.input`
-  display: none;
+const LabelText = styled.span`
+  margin-left: 4px;
 `
 
-const Heading = styled.h2`
-  font-size: ${theme.fontSizes.mediumLarge}px;
+const CheckBox = styled.input`
+  display: none;
 `
 
 const items = [
@@ -47,12 +53,17 @@ const SearchPageContainer = () => {
   const [selected, setSelected] = useState(conditions);
 
   const handleChange = (newConditions: string[]) => {
-    const params = new URLSearchParams();
-    newConditions.forEach((condition) => {
-      params.append('condition', condition);
-    });
+    try {
+      const params = new URLSearchParams();
+      newConditions.forEach((condition) => {
+        params.append('condition', condition);
+      });
 
-    router.push(`?${params.toString()}`);
+      router.push(`?${params.toString()}`);
+    } catch (error) {
+      console.error('URLパラメータの更新中にエラーが発生しました:', error);
+      // NOTE：必要に応じてユーザーへの通知を追加
+    }
   }
 
   const onChange = useCallback(
@@ -63,7 +74,7 @@ const SearchPageContainer = () => {
         : selected.filter((v) => v !== value);
 
       setSelected(newSelected);
-      handleChange?.(newSelected);
+      handleChange(newSelected);
     }, [selected, handleChange])
 
   const onClick = useCallback((name: string) => {
@@ -72,7 +83,7 @@ const SearchPageContainer = () => {
       : [...selected, name];
 
     setSelected(newSelected);
-    handleChange?.(newSelected);
+    handleChange(newSelected);
   },[selected, handleChange])
 
   return (
@@ -93,7 +104,7 @@ const SearchPageContainer = () => {
               ) : (
                 <CheckBoxOutlineBlankIcon size={20} />
               )}
-              <span>{label}</span>
+              <LabelText>{label}</LabelText>
             </Label>
           </CheckBoxElements>
         ))}
