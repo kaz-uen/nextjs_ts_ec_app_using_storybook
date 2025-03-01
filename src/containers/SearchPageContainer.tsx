@@ -47,16 +47,17 @@ const SearchPageContainer = () => {
   const router = useRouter();
   // 商品の状態をクエリから取得（配列）
   const searchParams = useSearchParams();
-  const conditions = searchParams.getAll('condition') ?? [];
+  const conditions = searchParams.getAll('condition') ?? []; // URLから'condition'パラメータの値を全て取得
 
-  // 「商品の状態」のチェックボックスの状態を管理
+  // 選択された「商品の状態」を状態として管理
   const [selected, setSelected] = useState(conditions);
 
+  // URLパラメータを更新する関数
   const handleChange = (newConditions: string[]) => {
     try {
-      const params = new URLSearchParams();
+      const params = new URLSearchParams(); // URLパラメータを構築するためのオブジェクトを作成
       newConditions.forEach((condition) => {
-        params.append('condition', condition);
+        params.append('condition', condition); // 各条件をURLパラメータに追加
       });
 
       router.push(`${window.location.pathname}?${params.toString()}`);
@@ -66,21 +67,23 @@ const SearchPageContainer = () => {
     }
   }
 
+  // チェックボックスの変更イベントハンドラ
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.name;
       const newSelected = e.target.checked
-        ? [...selected, value]
-        : selected.filter((v) => v !== value);
+        ? [...selected, value] // チェックされた場合は配列に追加
+        : selected.filter((v) => v !== value); // チェックが外された場合は配列から削除
 
       setSelected(newSelected);
       handleChange(newSelected);
     }, [selected])
 
+  // アイコンクリック時のイベントハンドラ
   const onClick = useCallback((name: string) => {
     const newSelected = selected.includes(name)
-      ? selected.filter(v => v !== name)
-      : [...selected, name];
+      ? selected.filter(v => v !== name) // すでに選択されている場合は削除
+      : [...selected, name]; // 選択されていない場合は追加
 
     setSelected(newSelected);
     handleChange(newSelected);
