@@ -59,7 +59,7 @@ const SearchPageContainer = () => {
         params.append('condition', condition);
       });
 
-      router.push(`?${params.toString()}`);
+      router.push(`${window.location.pathname}?${params.toString()}`);
     } catch (error) {
       console.error('URLパラメータの更新中にエラーが発生しました:', error);
       // NOTE：必要に応じてユーザーへの通知を追加
