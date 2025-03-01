@@ -75,7 +75,7 @@ const SearchPageContainer = () => {
 
       setSelected(newSelected);
       handleChange(newSelected);
-    }, [selected, handleChange])
+    }, [selected])
 
   const onClick = useCallback((name: string) => {
     const newSelected = selected.includes(name)
@@ -84,7 +84,7 @@ const SearchPageContainer = () => {
 
     setSelected(newSelected);
     handleChange(newSelected);
-  },[selected, handleChange])
+  },[selected])
 
   return (
     <>
@@ -98,6 +98,8 @@ const SearchPageContainer = () => {
                 type="checkbox"
                 checked={selected.includes(name)}
                 onChange={onChange}
+                aria-checked={selected.includes(name)}
+                aria-label={label}
               />
               {selected.includes(name) ? (
                 <CheckBoxIcon size={20} />
