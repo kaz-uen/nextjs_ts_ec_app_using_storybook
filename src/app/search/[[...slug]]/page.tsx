@@ -1,10 +1,16 @@
 import Layout from "@/components/templates/Layout";
 import SearchPageContainer from "@/containers/SearchPageContainer";
 
-const SearchPage = () => {
+interface SearchPageProps {
+  params: {
+    slug: string[];
+  }
+}
+
+const SearchPage = ({ params }: SearchPageProps) => {
   return (
     <Layout>
-      <SearchPageContainer />
+      <SearchPageContainer params={params} />
     </Layout>
   )
 }
