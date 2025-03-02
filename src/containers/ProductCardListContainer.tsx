@@ -39,28 +39,34 @@ const ProductPrice = styled.span`
   font-size: ${theme.fontSizes.small}px;
 `
 
-const context = {
-  apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_PATH || '/api/proxy',
-}
-
 const ProductCardListContainer = ({ category, conditions }: ProductCardListContainerProps) => {
+  const context = {
+    apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_PATH || '/api/proxy',
+  }
+
   const { products, isLoading } = useSearch(context, {
     category,
     conditions,
   })
 
   return (
-    <ProductList>
-      {products.map((p: Product) => (
-        <ProductItem key={p.id}>
-          <Link href={`/products/${p.id}`}>
-            <ProductImage src={p.imageUrl} alt={p.title} />
-            <ProductName>{p.title}</ProductName>
-            <ProductPrice>{p.price.toLocaleString()}円</ProductPrice>
-          </Link>
-        </ProductItem>
-      ))}
-    </ProductList>
+    <>
+      {isLoading ? (
+        <div>読み込み中</div>
+      ) : (
+        <ProductList>
+          {products.map((p: Product) => (
+            <ProductItem key={p.id}>
+              <Link href={`/products/${p.id}`}>
+                <ProductImage src={p.imageUrl} alt={p.title} />
+                <ProductName>{p.title}</ProductName>
+                <ProductPrice>{p.price.toLocaleString()}円</ProductPrice>
+              </Link>
+            </ProductItem>
+          ))}
+        </ProductList>
+      )}
+    </>
   )
 }
 
