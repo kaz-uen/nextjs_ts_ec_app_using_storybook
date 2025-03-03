@@ -14,7 +14,7 @@ import { Category, Condition } from "@/types";
 
 interface SearchPageContainerProps {
   params: {
-    slug: string[];
+    slug: string[]; // URLのパス部分を配列として受け取る
   }
 }
 
@@ -73,11 +73,13 @@ const CategoryLink = styled(Link)`
   }
 `
 
+// 商品の状態（新品/中古）の選択肢を定義
 const items = [
   { label: '新品', name: 'new' },
   { label: '中古', name: 'used' },
 ];
 
+// カテゴリーの表示名を定義
 const categoryNameDict = {
   book: '本',
   shoes: 'シューズ',
@@ -88,9 +90,19 @@ const SearchPageContainer = ({ params }: SearchPageContainerProps) => {
   const router = useRouter();
   // 商品の状態をクエリから取得（配列）
   const searchParams = useSearchParams();
-  const conditions = searchParams.getAll('condition') as Condition[] ?? []; // URLから'condition'パラメータの値を全て取得
+  // URLのクエリパラメータから'condition'という名前のパラメータの全ての値を配列として取得
+  const conditions = searchParams.getAll('condition') as Condition[] ?? [];
+  /**
+   * 例えば、URLが以下のような場合：
+   * http://example.com/search
+   * => conditions = []（空配列）
+   * http://example.com/search?condition=new
+   * => conditions = ['new']
+   * http://example.com/search?condition=new&condition=used
+   * => conditions = ['new', 'used']
+   */
 
-  // 選択された「商品の状態」を状態として管理
+  // 選択された「商品の状態」を管理するステート
   const [selected, setSelected] = useState<Condition[]>(conditions);
 
   // URLパラメータを更新する関数
@@ -100,8 +112,39 @@ const SearchPageContainer = ({ params }: SearchPageContainerProps) => {
       newConditions.forEach((condition) => {
         params.append('condition', condition); // 各条件をURLパラメータに追加
       });
+      /**
+       * ＜URLSearchParamsについて＞
+       * URLSearchParamsは、URLのクエリパラメータを扱うためのWebブラウザ標準のAPI。
+       * このオブジェクトを使用することで、URLのクエリ文字列（?以降の部分）を簡単に操作できる。
+       *
+       * // 例1: newConditions = ['new'] の場合
+       * const params = new URLSearchParams();
+       * params.append('condition', 'new');
+       * params.toString(); // 結果: "condition=new"
+       * // 最終的なURL: /search?condition=new
+       *
+       * // 例2: newConditions = ['new', 'used'] の場合
+       * const params = new URLSearchParams();
+       * params.append('condition', 'new');
+       * params.append('condition', 'used');
+       * params.toString(); // 結果: "condition=new&condition=used"
+       * // 最終的なURL: /search?condition=new&condition=used
+       */
 
       router.push(`${window.location.pathname}?${params.toString()}`);
+      /**
+       * ・window.location.pathname は現在のパス部分を取得  // 結果: "/search"
+       * ・params.toString() はURLSearchParamsオブジェクトをクエリ文字列に変換  // 結果: "condition=new&condition=used"
+       * ・`${window.location.pathname}?${params.toString()}`でこれらを組み合わせて新しいURLを生成  // 結果: "/search?condition=new&condition=used"
+       * ・router.pushで新しいURLに遷移
+       *
+       * ＜route.pushについて＞
+       * ・router.push()は、Next.jsのuseRouterフックが提供するメソッドで、クライアントサイドでのページ遷移を実現します
+       * ・ページ全体をリロードせずに、URLとページの状態を更新します
+       * ・URLの更新により、ブラウザの履歴にも新しいエントリーが追加されます（戻る/進むボタンで履歴を辿れます）
+       * ・URLが更新されることで、他のコンポーネントでもクエリパラメータを参照できます（例：商品一覧の絞り込みなど）
+       *
+       */
     } catch (error) {
       console.error('URLパラメータの更新中にエラーが発生しました:', error);
       // NOTE：必要に応じてユーザーへの通知を追加

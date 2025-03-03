@@ -57,6 +57,19 @@ const useUser = ( context: ApiContext, { id, initial }: UseUserProps): UseUser =
       }
     }
   );
+  /**
+   * useSWRについて
+   *
+   * useSWRは、データ取得のためのカスタムフック
+   * 第1引数には、データを取得するためのURLを指定
+   * 第2引数には、データ取得のための関数（fetcher）を指定
+   * 第3引数には、オプションを指定
+   *
+   * 第2引数のfetcherには、useSWR内部で自動的に第1引数のキーが渡されるため、
+   * 実質的にはfetcher(第1引数のurl)」のような形で呼び出される。
+   * 第3引数のオプションの設定により、再検証や再試行の挙動を制御したり、エラーハンドリングも可能。
+   * オプションには、revalidateOnFocusやshouldRetryOnError、onErrorなどがある。
+   */
 
   return {
     user: data ?? initial, // データがない場合は初期値を使用

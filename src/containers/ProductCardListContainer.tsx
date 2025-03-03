@@ -1,5 +1,6 @@
 import useSearch from "@/services/products/use-search";
 import Link from "next/link";
+import Image from "next/image";
 import styled from "styled-components";
 import { theme } from "@/themes";
 import type { Category, Condition, Product } from "@/types";
@@ -21,7 +22,7 @@ const ProductItem = styled.li`
   flex-direction: column;
 `
 
-const ProductImage = styled.img`
+const ProductImage = styled(Image)`
   width: 100%;
   min-width: 160px;
   aspect-ratio: 1 / 1;
@@ -43,6 +44,18 @@ const ProductCardListContainer = ({ category, conditions }: ProductCardListConta
   const context = {
     apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_PATH || '/api/proxy',
   }
+  /**
+   * next.config.mjsのrewritesの設定（下記部分）により、
+   * /api/proxyへのリクエストはhttp://localhost:8000（APIサーバー）に転送されるようになっている
+   * そのため、APIサーバーのURLを直接指定する必要はない
+   *
+   * return [
+   *  {
+   *     source: `${process.env.NEXT_PUBLIC_API_BASE_PATH}/:path*`,
+   *     destination: `${process.env.API_BASE_URL}/:path*`,
+   *   },
+   * ]
+   */
 
   const { products, isLoading } = useSearch(context, {
     category,
@@ -58,7 +71,14 @@ const ProductCardListContainer = ({ category, conditions }: ProductCardListConta
           {products.map((p: Product) => (
             <ProductItem key={p.id}>
               <Link href={`/products/${p.id}`}>
-                <ProductImage src={p.imageUrl} alt={p.title} />
+                <ProductImage
+                  src={p.imageUrl}
+                  alt={p.title}
+                  width={160}
+                  height={160}
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtgJyxtZIHwAAAABJRU5ErkJggg=="
+                />
                 <ProductName>{p.title}</ProductName>
                 <ProductPrice>{p.price.toLocaleString()}円</ProductPrice>
               </Link>
