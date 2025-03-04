@@ -210,7 +210,7 @@ const SearchPageContainer = ({ params }: SearchPageContainerProps) => {
         <section>
           <Heading>商品一覧</Heading>
           <ProductCardListContainer
-            category={params?.slug[0] as Category}
+            category={params.slug?.[0] as Category || undefined}
             conditions={conditions}
           />
         </section>
