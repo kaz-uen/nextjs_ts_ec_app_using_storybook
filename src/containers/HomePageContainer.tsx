@@ -66,7 +66,7 @@ const HomePageContainer = ({ products }: HomePageContainerProps) => {
       <ProductList>
         {products.map((p: Product,) => (
           <ProductItem key={p.id}>
-            <Link href={`/products/${p.id}`}>
+            <Link href={`/product/${p.id}`}>
               <ProductImage src={p.imageUrl} alt={p.title} />
               <ProductName>{p.title}</ProductName>
               <ProductPrice>{p.price.toLocaleString()}円</ProductPrice>
