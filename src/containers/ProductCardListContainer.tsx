@@ -70,7 +70,7 @@ const ProductCardListContainer = ({ category, conditions }: ProductCardListConta
         <ProductList>
           {products.map((p: Product) => (
             <ProductItem key={p.id}>
-              <Link href={`/products/${p.id}`}>
+              <Link href={`/product/${p.id}`}>
                 <ProductImage
                   src={p.imageUrl}
                   alt={p.title}
