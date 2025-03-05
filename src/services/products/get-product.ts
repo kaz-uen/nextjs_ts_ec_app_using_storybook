@@ -44,7 +44,7 @@ const getProduct = async (
     console.error('商品情報の取得に失敗しました:', error);
 
     // HTTPステータスコードに基づいたエラーハンドリング
-    if (err.status  === 404) {
+    if (err.status === 404) {
       throw new Error('指定された商品が見つかりませんでした');
     } else if (err.status === 500) {
       throw new Error('サーバーエラーが発生しました。しばらく経ってからもう一度お試しください');
