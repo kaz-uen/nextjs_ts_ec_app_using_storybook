@@ -83,7 +83,7 @@ const ProductDetail = ({ product: p }: ProductDetailProps) => {
             src={p.imageUrl}
             width={500}
             height={500}
-            alt=""
+            alt={`${p.title}の商品画像`}
           />
         </ImageContainer>
         <TextContainer>

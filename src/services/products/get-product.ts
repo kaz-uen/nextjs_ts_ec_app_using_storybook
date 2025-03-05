@@ -16,23 +16,28 @@ const getProduct = async (
   { id }: GetProductParams
 ): Promise<Product> => {
   // APIエンドポイントから商品情報を取得
-  return await fetcher(
-    // エンドポイントURLの生成
-    // context.apiRootUrlの末尾のスラッシュを削除し、/products/{id}の形式に整形
-    `${context.apiRootUrl.replace(/\/$/g, '')}/products/${id}`,
-    {
-      // キャッシュの設定
-      // revalidate: 10 - 10秒間キャッシュを有効にし、その後再検証
-      next: { revalidate: 10 },
-      // リクエストヘッダーの設定
-      headers: {
-        // レスポンスとしてJSONを受け取ることを指定
-        Accept: 'application/json',
-        // リクエストボディがJSONであることを指定
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  try {
+    return await fetcher(
+      // エンドポイントURLの生成
+      // context.apiRootUrlの末尾のスラッシュを削除し、/products/{id}の形式に整形
+      `${context.apiRootUrl.replace(/\/$/g, '')}/products/${id}`,
+      {
+        // キャッシュの設定
+        // revalidate: 10 - 10秒間キャッシュを有効にし、その後再検証
+        next: { revalidate: 10 },
+        // リクエストヘッダーの設定
+        headers: {
+          // レスポンスとしてJSONを受け取ることを指定
+          Accept: 'application/json',
+          // リクエストボディがJSONであることを指定
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+  } catch (error) {
+    console.error('商品情報の取得に失敗しました:', error);
+    throw new Error('商品情報の取得に失敗しました');
+  }
 }
 
 export default getProduct;

@@ -32,8 +32,6 @@ export async function generateStaticParams() {
   // APIから全商品情報を取得
   const products = await getAllProducts(context);
 
-  // console.log(products)
-
   // 各商品IDに対応するパラメータオブジェクトの配列を返却
   // これにより、各商品IDに対応する静的ページが生成される
   return products.map((product: Product) => ({
@@ -58,7 +56,8 @@ async function getProductData(productId: number) {
     return product;
   } catch (error) {
     console.error('商品データの取得に失敗しました:', error);
-    throw error;
+    // エラー時はnullを返し、呼び出し側で処理する
+    return null;
   }
 }
 
@@ -74,8 +73,26 @@ const ProductPage = async (
 ) => {
   // URLパラメータから商品IDを数値として取得
   const productId = Number(params.id);
+  // 有効な数値でない場合
+  if (isNaN(productId) || productId <= 0) {
+    // NOTE：エラーページにリダイレクトするか、エラーメッセージを表示する
+    return (
+      <Layout>
+        <div>無効な商品IDです</div>
+      </Layout>
+    )
+  }
+
   // 商品データを非同期で取得
   const product = await getProductData(productId);
+  // 商品データが取得できなかった場合
+  if (!product) {
+    return (
+      <Layout>
+        <div>商品が見つかりませんでした</div>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
