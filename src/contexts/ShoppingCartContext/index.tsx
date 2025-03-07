@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useReducer } from "react";
 import type { Product } from "@/types";
 import { shopReducer, ADD_PRODUCT, REMOVE_PRODUCT } from "@/contexts/ShoppingCartContext/reducers";

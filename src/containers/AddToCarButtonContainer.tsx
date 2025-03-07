@@ -1,16 +1,20 @@
+'use client';
+
 import { useShoppingCartContext } from "@/contexts/ShoppingCartContext";
 import type { Product } from "@/types";
+import { useRouter } from "next/navigation";
 
 interface AddToCartButtonContainerProps {
   product: Product; //追加される商品
-  onAddToCartButtonClick?: (product: Product) => void; //追加ボタンを押した時のイベントハンドラ
 }
 
 /**
  * カート追加ボタンコンテナ
  */
-const AddToButtonContainer = ({ product, onAddToCartButtonClick }: AddToCartButtonContainerProps) => {
+const AddToButtonContainer = ({ product }: AddToCartButtonContainerProps) => {
+  const router = useRouter();
   const { cart, addProductToCart } = useShoppingCartContext();
+
   const handleAddToCartButtonClick = () => {
     const productId = Number(product.id);
     const result = cart.findIndex((v) => v.id === productId);
@@ -20,7 +24,8 @@ const AddToButtonContainer = ({ product, onAddToCartButtonClick }: AddToCartButt
       addProductToCart(product);
     }
 
-    onAddToCartButtonClick?.(product);
+    // カートに追加したら、自動的にカートページに遷移する
+    router.push('/cart');
   }
 
   return (

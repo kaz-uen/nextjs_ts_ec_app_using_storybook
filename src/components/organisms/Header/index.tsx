@@ -74,7 +74,7 @@ const textNavItems = [
 
 const iconNavItems = [
   { id: 'search', href: '/search', icon: SearchIcon },
-  { id: 'cart', href: '/search/clothes', icon: ShoppingCartIcon },
+  { id: 'cart', href: '/cart', icon: ShoppingCartIcon },
 ] as const;
 
 const Header = () => {
