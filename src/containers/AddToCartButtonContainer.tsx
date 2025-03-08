@@ -19,7 +19,6 @@ const AddToCartButtonContainer = ({ product }: AddToCartButtonContainerProps) =>
     try {
       const productId = Number(product.id);
       const result = cart.findIndex((v) => v.id === productId);
-      console.log(result)
 
       // 同じ商品がカートに存在しない場合はカートに追加する
       if (result === -1) {
@@ -32,7 +31,8 @@ const AddToCartButtonContainer = ({ product }: AddToCartButtonContainerProps) =>
           router.push('/cart');
         }
       } else {
-        window.alert('すでに同じ商品がカートが存在します。');
+        // NOTE：トーストやモーダルなどのUI通知に変更する
+        window.alert('すでに同じ商品がカートに存在します。');
       }
     } catch (error) {
       console.error('カートに商品を追加できませんでした:', error);

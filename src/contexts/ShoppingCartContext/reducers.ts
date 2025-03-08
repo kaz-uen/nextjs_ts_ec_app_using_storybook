@@ -35,7 +35,7 @@ const removeProductFromCart = (productId: number, state: Product[]) => {
 
   // 商品が見つからない場合は現在の状態を返す
   if (removeItemIndex === -1) return state;
-  // findIndexが-1を返す（商品が見つからない場合）場合、spliceは配列の最後の要素を削除してしまうため、商品が存在するかどうかのチェックを追加
+  // NOTE：findIndexが-1を返す（商品が見つからない場合）場合、spliceは配列の最後の要素を削除してしまうため、商品が存在するかどうかのチェックを追加
 
   const newState = [...state];
   newState.splice(removeItemIndex, 1);

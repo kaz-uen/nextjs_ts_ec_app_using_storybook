@@ -31,12 +31,16 @@ const CartContainer = () => {
     try {
       setIsLoading(true);
       await purchase(context, { productId: id });
+      // NOTE：トーストやモーダルなどのUI通知に変更する
       window.alert('購入しました');
       // 商品購入後はカートから商品を削除する
       removeProductFromCart(id);
     } catch (err: unknown) {
       if (err instanceof Error) {
         window.alert(err.message);
+      } else {
+        // NOTE：Error以外の例外用の処理を追加する
+        console.log(err);
       }
     } finally {
       setIsLoading(false);
