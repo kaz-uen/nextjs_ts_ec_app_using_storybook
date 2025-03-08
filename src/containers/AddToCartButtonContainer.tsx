@@ -13,17 +13,25 @@ interface AddToCartButtonContainerProps {
  */
 const AddToCartButtonContainer = ({ product }: AddToCartButtonContainerProps) => {
   const router = useRouter();
+
+  // ShoppingCartContextから現在のカート状態と追加関数を取得
   const { cart, addProductToCart } = useShoppingCartContext();
 
+  /**
+   * カートに追加ボタンのクリックハンドラー
+   * 1. 商品の重複チェック
+   * 2. カートへの商品追加
+   * 3. ユーザーの選択に応じたカートページへの遷移
+   */
   const handleAddToCartButtonClick = () => {
     try {
       const productId = Number(product.id);
+      // カート内に同じ商品が存在するかチェック
       const result = cart.findIndex((v) => v.id === productId);
 
       // 同じ商品がカートに存在しない場合はカートに追加する
       if (result === -1) {
         addProductToCart(product);
-
         // NOTE：カートに追加した後、トースト通知などでユーザーにフィードバックを提供する
         const checkFlg = window.confirm('カートに移動しますか？');
         if (checkFlg) {
@@ -31,6 +39,7 @@ const AddToCartButtonContainer = ({ product }: AddToCartButtonContainerProps) =>
           router.push('/cart');
         }
       } else {
+        // 重複商品がある場合はユーザーに通知
         // NOTE：トーストやモーダルなどのUI通知に変更する
         window.alert('すでに同じ商品がカートに存在します。');
       }

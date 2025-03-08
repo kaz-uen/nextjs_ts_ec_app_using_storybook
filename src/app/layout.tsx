@@ -28,6 +28,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          {/*
+            ショッピングカートの状態管理プロバイダー
+            アプリケーション全体でカートの状態を共有するために使用
+          */}
           <ShoppingCartContextProvider>
             <ClientLayout>
               {children}
