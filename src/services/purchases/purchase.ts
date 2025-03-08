@@ -2,7 +2,7 @@ import type { ApiContext } from "@/types";
 import { fetcher } from '@/utils';
 
 interface PurchaseParams {
-  productId: number //購入する商品ID
+  productId: number; //購入する商品ID
 }
 
 /**
@@ -26,7 +26,7 @@ const purchase = async (
     })
   } catch (error) {
     console.error('購入結果の取得に失敗しました：', error);
-    throw new Error('購入結果の取得に失敗しました');
+    throw new Error(`購入結果の取得に失敗しました: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 

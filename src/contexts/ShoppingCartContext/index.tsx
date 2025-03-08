@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
 import type { Product } from "@/types";
 import { shopReducer, ADD_PRODUCT, REMOVE_PRODUCT } from "@/contexts/ShoppingCartContext/reducers";
 
@@ -24,8 +24,23 @@ export const useShoppingCartContext = (): ShoppingCartContextType => useContext(
 export const ShoppingCartContextProvider = (
   { children }: { children?: React.ReactNode }
 ) => {
-  const products: Product[] = [];
-  const [cartState, dispatch] = useReducer(shopReducer, products);
+  const [cartState, dispatch] = useReducer(shopReducer, []);
+
+  // カートデータを読み込む
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      const parsedCart = JSON.parse(savedCart) as Product[];
+      parsedCart.forEach(product => {
+        dispatch({ type: ADD_PRODUCT, payload: product });
+      })
+    }
+  }, [])
+
+  // カートデータの変更を保存
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartState));
+  }, [cartState])
 
   // 商品をカートに追加
   const addProductToCart = (product: Product) => {

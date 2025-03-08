@@ -2,7 +2,7 @@
 
 import useProduct from "@/services/products/use-product";
 import ProductDetail from "@/components/organisms/ProductDetail";
-import AddToButtonContainer from "@/containers/AddToCarButtonContainer";
+import AddToCartButtonContainer from "@/containers/AddToCartButtonContainer";
 import type { ApiContext, Product } from "@/types";
 
 interface ProductDetailContainerProps {
@@ -26,7 +26,7 @@ const ProductDetailContainer = (
   return (
     <div>
       <ProductDetail product={p} />
-      <AddToButtonContainer product={p} />
+      <AddToCartButtonContainer product={p} />
     </div>
   )
 }
