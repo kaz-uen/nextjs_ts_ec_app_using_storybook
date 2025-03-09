@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useReducer } from "react";
 import type { Product } from "@/types";
 import { shopReducer, ADD_PRODUCT, REMOVE_PRODUCT } from "@/contexts/ShoppingCartContext/reducers";
 
@@ -54,6 +54,9 @@ export const ShoppingCartContextProvider = (
       parsedCart.forEach(product => {
         dispatch({ type: ADD_PRODUCT, payload: product });
       })
+
+    // TODO：一度のディスパッチで全商品を設定する方針に変更
+    // dispatch({ type: 'SET_CART', payload: parsedCart });
     }
   }, [])
 
@@ -80,6 +83,38 @@ export const ShoppingCartContextProvider = (
   const removeProductFromCart = (productId: number) => {
     dispatch({ type: REMOVE_PRODUCT, payload: productId });
   }
+
+  // TODO：カート機能拡張のため以下のメソッドも追加して実装する
+  /**
+   * 商品の数量を更新するメソッド
+   * @param productId - 更新する商品のID
+   * @param quantity - 新しい数量
+   */
+  // const updateProductQuantity = (productId: number, quantity: number) => {
+  //   dispatch({ type: UPDATE_QUANTITY, payload: { id: productId, quantity } });
+  // }
+
+  /**
+   * カートを空にするメソッド
+   */
+  // const clearCart = () => {
+  //   dispatch({ type: CLEAR_CART });
+  // }
+
+  /**
+   * カート内の合計金額を計算するメソッド
+   * @returns カート内商品の合計金額
+   */
+  // const calculateTotal = () => {
+  //   return cartState.reduce((total, product) => total + product.price * (product.quantity || 1), 0);
+  // }
+
+  // TODO：コンテキスト値をメモ化する
+  // const contextValue = useMemo(() => ({
+  //   cart: cartState,
+  //   addProductToCart,
+  //   removeProductFromCart,
+  // }), [cartState])
 
   // コンテキストプロバイダーを返却
   // 値としてカートの状態と操作メソッドを提供
