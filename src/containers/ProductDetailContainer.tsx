@@ -2,6 +2,7 @@
 
 import useProduct from "@/services/products/use-product";
 import ProductDetail from "@/components/organisms/ProductDetail";
+import AddToCartButtonContainer from "@/containers/AddToCartButtonContainer";
 import type { ApiContext, Product } from "@/types";
 
 interface ProductDetailContainerProps {
@@ -22,7 +23,12 @@ const ProductDetailContainer = (
 
   if (!p) return <div>Loading...</div>
 
-  return <ProductDetail product={p} />
+  return (
+    <div>
+      <ProductDetail product={p} />
+      <AddToCartButtonContainer product={p} />
+    </div>
+  )
 }
 
 export default ProductDetailContainer;
