@@ -7,6 +7,7 @@ import {
   PersonIcon,
   ShoppingCartIcon
 } from '@/components/atoms/IconButton';
+import { useAuthContext } from '@/contexts/AuthContext';
 
 const HeaderRoot = styled.header`
   display: flex;
@@ -78,8 +79,8 @@ const iconNavItems = [
 ] as const;
 
 const Header = () => {
-  // TODO: 後ほど実装
-  const authUser = null;
+  // 認証コンテキストから現在のユーザー状態を取得
+  const { authUser, isLoading } = useAuthContext();
 
   return (
     <HeaderRoot>
@@ -109,9 +110,9 @@ const Header = () => {
             </NavLink>
           ))}
           <NavLink>
-            {authUser ? (
+            {!isLoading && authUser ? (
               // TODO:後で実装する
-              <span>アイコン</span>
+              <span>ログイン中</span>
             ): (
               <Link href="/signin">
                 <Anchor><PersonIcon /></Anchor>

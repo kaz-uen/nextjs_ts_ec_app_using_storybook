@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ShoppingCartContextProvider } from "@/contexts/ShoppingCartContext";
 import ClientLayout from "@/components/templates/ClientLayout";
 
 const geistSans = localFont({
@@ -28,15 +27,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          {/*
-            ショッピングカートの状態管理プロバイダー
-            アプリケーション全体でカートの状態を共有するために使用
-          */}
-          <ShoppingCartContextProvider>
-            <ClientLayout>
-              {children}
-            </ClientLayout>
-          </ShoppingCartContextProvider>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
         </body>
     </html>
   );

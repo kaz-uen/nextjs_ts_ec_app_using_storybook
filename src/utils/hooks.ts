@@ -21,7 +21,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 export const useAuthGuard = (): boolean => {
   const router = useRouter();
   // 認証コンテキストから現在のユーザー状態を取得
-  const { authUser } = useAuthContext();
+  const { authUser, isLoading } = useAuthContext();
 
   /**
    * 認証状態の監視とリダイレクト制御
@@ -31,10 +31,10 @@ export const useAuthGuard = (): boolean => {
    */
   useEffect(() => {
     // ユーザーが取得できない場合はサインインページにリダイレクト
-    if (!authUser) {
+    if (!authUser && !isLoading) {
       router.push('/signin');
     }
-  }, [router, authUser])
+  }, [router, authUser, isLoading])
 
   // 認証状態を返す
   // NOTE：!!演算子で明示的にboolean型に変換

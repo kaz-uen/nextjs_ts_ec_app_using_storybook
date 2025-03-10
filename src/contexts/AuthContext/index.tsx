@@ -3,12 +3,14 @@ import signin from "@/services/auth/signin";
 import signout from "@/services/auth/signout";
 import { createContext, useContext, useEffect } from "react";
 import type { ApiContext, User } from '@/types';
+import { fetcher } from '@/utils';
 
 /**
  * 2. 認証コンテキストの型定義
  */
 interface AuthContextType {
   authUser?: User;
+  isLoading: boolean;
   signin: (username: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
   mutate: (
@@ -27,6 +29,7 @@ interface AuthContextProviderProps {
  */
 const AuthContext = createContext<AuthContextType>({
   authUser: undefined,
+  isLoading: false,
   signin: async () => Promise.resolve(),
   signout: async () => Promise.resolve(),
   mutate: async () => Promise.resolve(undefined),
@@ -46,10 +49,24 @@ export const AuthContextProvider = ({
 }: React.PropsWithChildren<AuthContextProviderProps>) => {
   // ユーザー情報を取得するSWRフック
   // replace...でURLの末尾のスラッシュを削除 => context.apiRootUrlの値が"/"で終わる場合と終わらない場合の両方に対応
-  const { data, error, mutate } = useSWR<User>(`${context.apiRootUrl.replace(/\/$/g, '')}/users/me`);
+  const { data, error, mutate } = useSWR<User>(
+    `${context.apiRootUrl.replace(/\/$/g, '')}/users/me`,
+    fetcher,
+    {
+      // リフェッチの設定やキャッシュの設定を追加
+      revalidateOnFocus: false,
+      dedupingInterval: 60000,
+      // エラー時の再試行を無効化
+      shouldRetryOnError: false,
+    }
+  );
+
+  // ローディング状態の管理
+  const isLoading = !data && !error;
 
   // ユーザー情報の取得に失敗した場合のエラーハンドリング
   useEffect(() => {
+    // TODO：未認証の場合はエラーを出さないようにしたい
     if (error) {
       console.error('Failed to fetch user:', error);
     }
@@ -75,6 +92,7 @@ export const AuthContextProvider = ({
   return (
     <AuthContext.Provider value={{
       authUser: data ?? authUser,
+      isLoading,
       signin: signinInternal,
       signout: signoutInternal,
       mutate,
