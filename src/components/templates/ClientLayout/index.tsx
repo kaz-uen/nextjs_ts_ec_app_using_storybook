@@ -24,8 +24,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <AuthContextProvider context={context}>
         <ShoppingCartContextProvider>
           {children}
-          </ShoppingCartContextProvider>
-        </AuthContextProvider>
+        </ShoppingCartContextProvider>
+      </AuthContextProvider>
     </StyledComponentsRegistry>
   );
 }
