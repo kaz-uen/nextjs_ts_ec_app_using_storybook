@@ -111,8 +111,7 @@ const Header = () => {
           ))}
           <NavLink>
             {!isLoading && authUser ? (
-              // TODO:後で実装する
-              <span>ログイン中</span>
+              <Link href={`/users/${authUser.id}`}>マイページ</Link>
             ): (
               <Link href="/signin">
                 <Anchor><PersonIcon /></Anchor>
