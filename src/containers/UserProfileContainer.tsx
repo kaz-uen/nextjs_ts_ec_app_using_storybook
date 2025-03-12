@@ -1,6 +1,7 @@
 'use client';
 
 import UserProfile from "@/components/organisms/UserProfile";
+import SignoutButtonContainer from "./SignoutButtonContainer";
 import useUser from "@/services/users/use-user";
 import type { ApiContext, User } from "@/types";
 
@@ -47,10 +48,13 @@ const UserProfileContainer = ({ userId, user }: UserProfileContainerProps) => {
   if (!u) return <div>Loading...</div>
 
   return (
-    <UserProfile
-      username={u.username}
-      description={u.description}
-    />
+    <>
+      <UserProfile
+        username={u.username}
+        description={u.description}
+        />
+      <SignoutButtonContainer />
+      </>
   )
 }
 
