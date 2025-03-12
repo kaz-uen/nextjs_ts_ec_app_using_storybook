@@ -8,16 +8,25 @@ const SignoutButtonContainer = () => {
   const { signout } = useAuthContext();
 
   const handleSignoutButtonClick = async () => {
+    // サインアウト前に確認を取る
+    if (!window.confirm('ログアウトしてもよろしいですか？')) return;
+
     try {
       await signout();
       router.replace('/signin');
     } catch (error) {
-      console.log(error);
+      // エラーをユーザーに通知する
+      alert('ログアウトに失敗しました。もう一度お試しください。')
     }
   }
 
   return (
-    <button onClick={handleSignoutButtonClick}>ログアウト</button>
+    <button
+      onClick={handleSignoutButtonClick}
+      aria-label="ログアウト"
+    >
+      ログアウト
+    </button>
   )
 }
 
