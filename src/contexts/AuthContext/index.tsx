@@ -84,8 +84,41 @@ export const AuthContextProvider = ({
   const signoutInternal = async () => {
     // サインアウトAPIを呼び出し
     await signout(context);
-    // ユーザー情報を再取得
-    await mutate();
+    // ユーザー情報をnullで更新し、キャッシュをクリア
+    await mutate(undefined, false);
+    /**
+     * mutateについて：
+     *
+     * mutateの基本的な形式は以下の通り。
+     *
+     * mutate(
+     *   data?: User | Promise<User> | undefined,  // 新しいデータ
+     *   shouldRevalidate: boolean = true          // 再検証するかどうか
+     * )
+     *
+     * 今回のケースで設定した値の意味：
+     * 1. 第1引数 undefined
+     *  - キャッシュに保存されているユーザーデータをundefinedに設定
+     *  - これにより、ログアウト後にユーザー情報が存在しない状態を表現
+     *  - AuthContextのauthUserがundefinedとなり、ヘッダーなどのUIが未ログイン状態に切り替わる
+     * 2. 第2引数 false
+     *  - falseを設定することで、データの再検証（APIへの再リクエスト）を行わない
+     *  - ログアウト後にユーザー情報を取得しようとする必要がないため
+     *  - もしtrueにすると、不要なAPIリクエストが発生する可能性がある
+     *
+     * 例えば、以下のような異なる使い方もあります：
+     * // データを特定の値に更新し、その後APIから再検証する
+     * await mutate({ id: 1, username: "newName" }, true);
+     * // データを更新せずに再検証のみ行う
+     * await mutate();
+     * // データを更新し、再検証は行わない
+     * await mutate(newData, false);
+     *
+     * ログアウトの場合は：
+     * 1. ユーザーデータを確実に削除（undefined）
+     * 2. 不要なAPI通信を防ぐ（false）
+     * という目的で、mutate(undefined, false)を使用しています。
+     */
   }
 
   // AuthContextの値（認証情報）を子コンポーネントに提供
