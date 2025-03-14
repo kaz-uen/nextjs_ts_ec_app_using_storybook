@@ -1,12 +1,42 @@
 'use client';
 
 import { useShoppingCartContext } from "@/contexts/ShoppingCartContext";
+import { theme } from "@/themes";
 import type { Product } from "@/types";
 import { useRouter } from "next/navigation";
+import { ShoppingCartIcon } from '@/components/atoms/IconButton';
+import styled from "styled-components";
 
 interface AddToCartButtonContainerProps {
   product: Product; //追加される商品
 }
+
+const Button = styled.button`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  background-color: #23abdd;
+  transition: opacity .2s;
+
+  &:hover {
+    opacity: .8;
+  }
+`
+
+const ButtonText = styled.span`
+  color: ${theme.colors.white};
+  font-size: ${theme.fontSizes.small}px;
+  font-weight: bold;
+  margin-left: 4px;
+`
+
+const CartIcon = styled(ShoppingCartIcon)`
+  color: ${theme.colors.white};
+`
 
 /**
  * カート追加ボタンコンテナ
@@ -50,7 +80,10 @@ const AddToCartButtonContainer = ({ product }: AddToCartButtonContainerProps) =>
   }
 
   return (
-    <button onClick={handleAddToCartButtonClick}>カートに追加</button>
+    <Button onClick={handleAddToCartButtonClick}>
+      <CartIcon />
+      <ButtonText>カートに追加</ButtonText>
+    </Button>
   )
 }
 
