@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Product } from "@/types";
 import styled from "styled-components";
 import { theme } from "@/themes";
+import AddToCartButtonContainer from "@/containers/AddToCartButtonContainer";
 
 interface ProductDetailProps {
   product: Product;
@@ -33,6 +34,7 @@ const ImageContainer = styled.div`
 
 const TextContainer = styled.div`
   width: 100%;
+  margin-bottom: 40px;
 `
 
 const ProductImage = styled(Image)`
@@ -86,13 +88,16 @@ const ProductDetail = ({ product: p }: ProductDetailProps) => {
             alt={`${p.title}の商品画像`}
           />
         </ImageContainer>
-        <TextContainer>
-          <ProductName>{p.title}</ProductName>
-          <ProductPrice>{p.price.toLocaleString()}円<ProductPriceTax>（税込）</ProductPriceTax></ProductPrice>
-          <ProductId>商品ID：{p.id}</ProductId>
-          <ProductOwner>出品者：{p.owner.username}</ProductOwner>
-          {p.description && <ProductDescription>{p.description}</ProductDescription>}
-        </TextContainer>
+        <div>
+          <TextContainer>
+            <ProductName>{p.title}</ProductName>
+            <ProductPrice>{p.price.toLocaleString()}円<ProductPriceTax>（税込）</ProductPriceTax></ProductPrice>
+            <ProductId>商品ID：{p.id}</ProductId>
+            <ProductOwner>出品者：{p.owner.username}</ProductOwner>
+            {p.description && <ProductDescription>{p.description}</ProductDescription>}
+          </TextContainer>
+          <AddToCartButtonContainer product={p} />
+        </div>
       </DetailInner>
     </DetailRoot>
   )
