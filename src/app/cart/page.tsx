@@ -8,7 +8,6 @@ import Layout from "@/components/templates/Layout";
 const CartPage = () => {
   return (
     <Layout>
-      <div>カートページ</div>
       <CartContainer />
     </Layout>
   )
