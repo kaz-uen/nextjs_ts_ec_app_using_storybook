@@ -14,9 +14,15 @@ const ProfileInner = styled.article`
   margin-inline: auto;
 `
 
-const Name = styled.h1`
-  font-size: ${theme.fontSizes.mediumLarge}px;
+const Heading = styled.h1`
+  font-size: ${theme.fontSizes.large}px;
   font-weight: bold;
+  margin-bottom: 8px;
+`
+
+const Description = styled.p`
+  font-size: ${theme.fontSizes.medium}px;
+  margin-bottom: 8px;
 `
 
 const FirstName = styled.span`
@@ -26,6 +32,22 @@ const FirstName = styled.span`
 const LastName = styled.span`
   display: inline-block;
   margin-right: 8px;
+`
+
+const Info = styled.div`
+  border: solid 1px ${theme.colors.black};
+  padding: 16px;
+`
+
+const InfoHeading = styled.h2`
+  font-size: ${theme.fontSizes.medium}px;
+  font-weight: bold;
+  margin-bottom: 16px;
+`
+
+const TableHeading = styled.th`
+  width: 140px;
+  text-align: right;
 `
 
 const UserProfile = ({
@@ -40,40 +62,42 @@ const UserProfile = ({
   return (
     <ProfileRoot aria-label="ユーザープロフィール">
       <ProfileInner>
-        <Name>
+        <Heading>
           <LastName>{lastName}</LastName>
           <FirstName>{firstName}</FirstName>
           さんの会員ページ
-        </Name>
-        <p>会員登録の際にいただいた情報です。</p>
+        </Heading>
+        <Description>会員登録の際にいただいた情報です。</Description>
 
-        <div>
-          <h2>お客様情報</h2>
+        <Info>
+          <InfoHeading>お客様情報</InfoHeading>
           <table>
-            <tr>
-              <th>お名前：</th>
-              <td>{lastName}&nbsp;{firstName}&nbsp;様</td>
-            </tr>
-            <tr>
-              <th>フリガナ：</th>
-              <td>{furiganaLast}&nbsp;{furiganaFirst}&nbsp;様</td>
-            </tr>
-            <tr>
-              <th>電話番号：</th>
-              <td>{tel}</td>
-            </tr>
-            <tr>
-              <th>メールアドレス：</th>
-              <td>{email}</td>
-            </tr>
-            {description &&
+            <tbody>
               <tr>
-                <th>一言：</th>
-                <td>{description}</td>
+                <TableHeading>お名前：</TableHeading>
+                <td>{lastName}&nbsp;{firstName}&nbsp;様</td>
               </tr>
-            }
+              <tr>
+                <TableHeading>フリガナ：</TableHeading>
+                <td>{furiganaLast}&nbsp;{furiganaFirst}&nbsp;様</td>
+              </tr>
+              <tr>
+                <TableHeading>電話番号：</TableHeading>
+                <td>{tel}</td>
+              </tr>
+              <tr>
+                <TableHeading>メールアドレス：</TableHeading>
+                <td>{email}</td>
+              </tr>
+              {description &&
+                <tr>
+                  <TableHeading>一言：</TableHeading>
+                  <td>{description}</td>
+                </tr>
+              }
+            </tbody>
           </table>
-        </div>
+        </Info>
       </ProfileInner>
     </ProfileRoot>
   )
