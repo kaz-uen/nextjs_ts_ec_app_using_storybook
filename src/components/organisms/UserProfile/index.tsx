@@ -25,12 +25,13 @@ const Description = styled.p`
   margin-bottom: 8px;
 `
 
-const FirstName = styled.span`
+const NamePart = styled.span`
   display: inline-block;
 `
 
-const LastName = styled.span`
-  display: inline-block;
+const FirstName = styled(NamePart)``
+
+const LastName = styled(NamePart)`
   margin-right: 8px;
 `
 
@@ -39,9 +40,10 @@ const Info = styled.div`
   padding: 16px;
 `
 
-const InfoHeading = styled.h2`
+const Caption = styled.caption`
   font-size: ${theme.fontSizes.medium}px;
   font-weight: bold;
+  text-align: left;
   margin-bottom: 16px;
 `
 
@@ -70,8 +72,8 @@ const UserProfile = ({
         <Description>会員登録の際にいただいた情報です。</Description>
 
         <Info>
-          <InfoHeading>お客様情報</InfoHeading>
-          <table>
+          <table aria-labelledby="user-info-heading">
+            <Caption id="user-info-heading">お客様情報</Caption>
             <tbody>
               <tr>
                 <TableHeading>お名前：</TableHeading>
