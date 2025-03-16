@@ -4,11 +4,22 @@ import UserProfile from "@/components/organisms/UserProfile";
 import SignoutButtonContainer from "./SignoutButtonContainer";
 import useUser from "@/services/users/use-user";
 import type { ApiContext, User } from "@/types";
+import { theme } from "@/themes";
+import styled from "styled-components";
 
 interface UserProfileContainerProps {
   userId: number;
   user?: User;
 }
+
+const Inner = styled.div`
+  margin-inline: auto;
+  max-width: 980px;
+  padding: 32px 16px;
+  @media screen and (min-width: ${theme.breakPoints.md}) {
+    padding: 32px 0;
+  }
+`
 
 const context: ApiContext = {
   apiRootUrl: process.env.NEXT_PUBLIC_API_BASE_PATH || '/api/proxy',
@@ -48,13 +59,18 @@ const UserProfileContainer = ({ userId, user }: UserProfileContainerProps) => {
   if (!u) return <div>Loading...</div>
 
   return (
-    <>
+    <Inner>
       <UserProfile
-        username={u.username}
+        firstName={u.firstName}
+        lastName={u.lastName}
+        furiganaFirst={u.furiganaFirst}
+        furiganaLast={u.furiganaLast}
+        tel={u.tel}
+        email={u.email}
         description={u.description}
         />
       <SignoutButtonContainer />
-      </>
+    </Inner>
   )
 }
 
