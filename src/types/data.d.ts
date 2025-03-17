@@ -8,6 +8,11 @@ export type User = {
   id: number
   username: string
   displayName: string
+  firstName: string
+  furiganaFirst: string
+  furiganaLast: string
+  lastName: string
+  tel: string
   email: string
   profileImageUrl: string
   description: string

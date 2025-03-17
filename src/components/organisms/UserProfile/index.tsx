@@ -1,11 +1,10 @@
 'use client';
 
+import type { User } from "@/types";
+import { theme } from "@/themes";
 import styled from "styled-components";
 
-interface UserProfileProps {
-  username: string;
-  description?: string;
-}
+type UserProfileProps = Omit<User, "id" | "username" | "displayName" | "profileImageUrl">
 
 const ProfileRoot = styled.section`
   margin-bottom: 8px;
@@ -15,21 +14,92 @@ const ProfileInner = styled.article`
   margin-inline: auto;
 `
 
-const UserName = styled.h1`
-  font-size: 16px;
+const Heading = styled.h1`
+  font-size: ${theme.fontSizes.large}px;
   font-weight: bold;
+  margin-bottom: 8px;
 `
 
-const UserDescription = styled.p`
-  font-size: 16px;
+const Description = styled.p`
+  font-size: ${theme.fontSizes.medium}px;
+  margin-bottom: 8px;
 `
 
-const UserProfile = ({ username, description }: UserProfileProps) => {
+const NamePart = styled.span`
+  display: inline-block;
+`
+
+const FirstName = styled(NamePart)``
+
+const LastName = styled(NamePart)`
+  margin-right: 8px;
+`
+
+const Info = styled.div`
+  border: solid 1px ${theme.colors.black};
+  padding: 16px;
+`
+
+const Caption = styled.caption`
+  font-size: ${theme.fontSizes.medium}px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 16px;
+`
+
+const TableHeading = styled.th`
+  width: 140px;
+  text-align: right;
+`
+
+const UserProfile = ({
+  firstName,
+  lastName,
+  furiganaFirst,
+  furiganaLast,
+  tel,
+  email,
+  description
+}: UserProfileProps) => {
   return (
     <ProfileRoot aria-label="ユーザープロフィール">
       <ProfileInner>
-        <UserName>{username}</UserName>
-        {description && <UserDescription>{description}</UserDescription>}
+        <Heading>
+          <LastName>{lastName}</LastName>
+          <FirstName>{firstName}</FirstName>
+          さんの会員ページ
+        </Heading>
+        <Description>会員登録の際にいただいた情報です。</Description>
+
+        <Info>
+          <table aria-labelledby="user-info-heading">
+            <Caption id="user-info-heading">お客様情報</Caption>
+            <tbody>
+              <tr>
+                <TableHeading>お名前：</TableHeading>
+                <td>{lastName}&nbsp;{firstName}&nbsp;様</td>
+              </tr>
+              <tr>
+                <TableHeading>フリガナ：</TableHeading>
+                <td>{furiganaLast}&nbsp;{furiganaFirst}&nbsp;様</td>
+              </tr>
+              <tr>
+                <TableHeading>電話番号：</TableHeading>
+                <td>{tel}</td>
+              </tr>
+              <tr>
+                <TableHeading>メールアドレス：</TableHeading>
+                <td>{email}</td>
+              </tr>
+              {description &&
+                <tr>
+                  <TableHeading>一言：</TableHeading>
+                  <td>{description}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </Info>
       </ProfileInner>
     </ProfileRoot>
   )
