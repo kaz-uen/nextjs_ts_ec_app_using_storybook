@@ -1,5 +1,6 @@
 import type { ApiContext, Category, Condition, Product } from "@/types";
 import { fetcher } from "@/utils";
+import { ApiError } from "@/errors";
 
 interface GetAllProductsParams {
   category?: Category;
@@ -49,7 +50,26 @@ const getAllProducts = async (
       },
     })
   } catch (error) {
-    console.error('商品データの取得に失敗しました:', error);
+    if (error instanceof ApiError) {
+      switch (error.status) {
+        case 401:
+          alert("認証エラー: 再ログインしてください。");
+          break;
+        case 403:
+          alert("権限がありません。");
+          break;
+        case 404:
+          alert("データが見つかりませんでした。");
+          break;
+        case 500:
+          alert("サーバーエラーが発生しました。");
+          break;
+        default:
+          alert("不明なエラーが発生しました。");
+      }
+    } else {
+      console.error('予期しないエラー：', error);
+    }
     throw error;
   }
 }
