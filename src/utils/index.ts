@@ -12,16 +12,49 @@ export const fetcher = async <T>(
 
     // レスポンスが失敗した時に例外を投げる
     if (!res.ok) {
-      const errorRes = await res.json();
+      let errorData;
+      try {
+        // エラーレスポンスのJSONパース
+        errorData = await res.json();
+      } catch (parseError) {
+        // JSONパースに失敗した場合
+        throw new ApiError( // 1. ここで新しいApiErrorインスタンスを生成して投げる
+          "エラーレスポンスの解析に失敗しました",
+          res.status, // HTTPステータスコード
+          {
+            type: 'ERROR_RESPONSE_PARSE_FAILED',
+            originalError: parseError,
+            responseText: await res.text(), // 生のレスポンスデータを保持
+            contentType: res.headers.get('content-type'), // レスポンスのContent-Type
+          }
+        );
+      }
+
       throw new ApiError( // 1. ここで新しいApiErrorインスタンスを生成して投げる
-        errorRes.message ?? "APIリクエスト中にエラーが発生しました", // エラーメッセージ
+        errorData.message ?? "APIリクエスト中にエラーが発生しました",
         res.status, // HTTPステータスコード
-        errorRes // 生のエラーレスポンス
-      )
+        errorData
+      );
     }
 
-    // 正常なレスポンスの場合、JSONとしてパース
-    return res.json();
+    try {
+      // 正常レスポンスのJSONパース
+      return await res.json() as T;
+    } catch (parseError) {
+      // JSONパースに失敗した場合
+      throw new ApiError(
+        "レスポンスの解析に失敗しました",
+        0,
+        {
+          type: 'RESPONSE_PARSE_ERROR',
+          originalError: parseError,
+          responseText: await res.clone().text(), // レスポンスの生データを保持
+          contentType: res.headers.get('content-type'),
+          expectedType: 'application/json',
+          status: res.status,
+        }
+      );
+    }
 
   } catch (error) {
     if (error instanceof ApiError) { // 2. 上で投げられたApiErrorがここでキャッチされる（errorがApiErrorクラスのインスタンスかどうか判定）
@@ -35,11 +68,12 @@ export const fetcher = async <T>(
        * ・テストがしやすい
        */
     } else { // 3. errorがApiErrorでない場合、つまりネットワークエラーなど
-      // その他のエラーはApiErrorでラップして投げる
       let errorMessage: string;
       let errorType: string;
+      let errorDetails: Record<string, unknown> = {};
 
       if (error instanceof TypeError) {
+        // TypeErrorの詳細な分類
         if (error.message.includes('Failed to fetch')) {
           errorMessage = "ネットワーク接続に失敗しました";
           errorType = 'NETWORK_ERROR';
@@ -50,21 +84,36 @@ export const fetcher = async <T>(
           errorMessage = "データの形式が不正です";
           errorType = 'TYPE_ERROR';
         }
+        errorDetails = {
+          originalMessage: error.message,
+          url: resource.toString()
+        };
       } else if (error instanceof SyntaxError) {
+        // JSONパースエラー
         errorMessage = "レスポンスの解析に失敗しました";
         errorType = 'PARSE_ERROR';
+        errorDetails = {
+          originalMessage: error.message
+        };
       } else {
+        // その他の予期せぬエラー
         errorMessage = "予期せぬエラーが発生しました";
         errorType = 'UNKNOWN_ERROR';
+        if (error instanceof Error) {
+          errorDetails = {
+            originalMessage: error.message
+          };
+        }
       }
 
+      // その他のエラーはApiErrorでラップして投げる
       throw new ApiError(
-        errorMessage,
-        0,
+        errorMessage, //ユーザーフレンドリーなメッセージ
+        0, //HTTPエラー以外を示す特別なステータスコード
         {
-          type: errorType,
-          originalError: error,
-          message: error.message
+          type: errorType, //エラーの種類を示す文字列
+          ...errorDetails, //エラーの詳細情報
+          originalError: error, //デバッグ用の元のエラーオブジェクト
         }
       );
     }
