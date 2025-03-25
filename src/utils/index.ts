@@ -13,6 +13,7 @@ export const fetcher = async <T>(
     // レスポンスが失敗した時に例外を投げる
     if (!res.ok) {
       let errorData;
+
       try {
         // エラーレスポンスのJSONパース
         errorData = await res.json();
@@ -75,8 +76,17 @@ export const fetcher = async <T>(
       if (error instanceof TypeError) {
         // TypeErrorの詳細な分類
         if (error.message.includes('Failed to fetch')) {
-          errorMessage = "ネットワーク接続に失敗しました";
-          errorType = 'NETWORK_ERROR';
+          // ネットワークエラーの種類を詳細に分類
+          if (error.message.includes('timeout')) {
+            errorMessage = "接続がタイムアウトしました";
+            errorType = 'TIMEOUT_ERROR';
+          } else if (error.message.includes('CORS')) {
+            errorMessage = "クロスオリジンリクエストが拒否されました";
+            errorType = "CORS_ERROR";
+          } else {
+            errorMessage = "ネットワーク接続に失敗しました";
+            errorType = 'NETWORK_ERROR';
+          }
         } else if (error.message.includes('Invalid URL')) {
           errorMessage = "無効なURLです";
           errorType = 'INVALID_URL';
@@ -103,6 +113,11 @@ export const fetcher = async <T>(
           errorDetails = {
             originalMessage: error.message
           };
+        } else {
+          // Error以外のオブジェクトがスローされることは稀だが、エラー情報を常に安全に取得する
+          errorDetails = {
+            originalValue: String(error)
+          }
         }
       }
 
