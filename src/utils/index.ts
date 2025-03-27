@@ -74,7 +74,6 @@ export const fetcher = async <T>(
       let errorDetails: Record<string, unknown> = {};
 
       if (error instanceof TypeError) {
-        console.log(error.message)
         // TypeErrorの詳細な分類
         if (error.message.includes('Failed to fetch')) {
           // ネットワークエラーの種類を詳細に分類
