@@ -40,6 +40,16 @@ const getAllProducts = async (
   limit?.toString() && params.append('_limit', limit.toString());
   sort?.toString() && params.append('_sort', sort.toString());
   order?.toString() && params.append('_order', order.toString());
+  /**
+   * 本プロジェクトは、APIサーバー側でjson-serverを使用していることを前提にコードが組まれている。
+   * その上で、json-serverは以下のような便利なクエリパラメータを標準でサポートしている：
+   * (1)ページネーション用パラメータ:
+   * ・_page: ページ番号
+   * ・_limit: 1ページあたりの件数
+   * (2)ソート用パラメータ:
+   * ・_sort: ソートするフィールド
+   * ・_order: ソート順（ascまたはdesc）
+   */
   const query = params.toString()
 
   try {
