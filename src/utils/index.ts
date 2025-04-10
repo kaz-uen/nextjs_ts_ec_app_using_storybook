@@ -1,4 +1,5 @@
 import { ApiError } from "@/errors";
+import { ERROR_MESSAGES } from "@/constants/errorMessages";
 
 /**
  * APIクライアントへのリクエスト送信用関数
@@ -45,14 +46,13 @@ export const fetcher = async <T>(
       // JSONパースに失敗した場合
       throw new ApiError(
         "レスポンスの解析に失敗しました",
-        0,
+        res.status, //実際のHTTPステータスコードを使用
         {
           type: 'RESPONSE_PARSE_ERROR',
           originalError: parseError,
           responseText: await res.clone().text(), // レスポンスの生データを保持
           contentType: res.headers.get('content-type'),
           expectedType: 'application/json',
-          status: res.status,
         }
       );
     }
@@ -78,20 +78,20 @@ export const fetcher = async <T>(
         if (error.message.includes('Failed to fetch')) {
           // ネットワークエラーの種類を詳細に分類
           if (error.message.includes('timeout')) {
-            errorMessage = "接続がタイムアウトしました";
+            errorMessage = ERROR_MESSAGES.TIMEOUT;
             errorType = 'TIMEOUT_ERROR';
           } else if (error.message.includes('CORS')) {
-            errorMessage = "クロスオリジンリクエストが拒否されました";
+            errorMessage = ERROR_MESSAGES.CORS;
             errorType = "CORS_ERROR";
           } else {
-            errorMessage = "ネットワーク接続に失敗しました";
+            errorMessage = ERROR_MESSAGES.NETWORK;
             errorType = 'NETWORK_ERROR';
           }
         } else if (error.message.includes('Invalid URL')) {
-          errorMessage = "無効なURLです";
+          errorMessage = ERROR_MESSAGES.INVALID;
           errorType = 'INVALID_URL';
         } else {
-          errorMessage = "データの形式が不正です";
+          errorMessage = ERROR_MESSAGES.TYPE;
           errorType = 'TYPE_ERROR';
         }
         errorDetails = {
@@ -100,14 +100,14 @@ export const fetcher = async <T>(
         };
       } else if (error instanceof SyntaxError) {
         // JSONパースエラー
-        errorMessage = "レスポンスの解析に失敗しました";
+        errorMessage = ERROR_MESSAGES.PARSE;
         errorType = 'PARSE_ERROR';
         errorDetails = {
           originalMessage: error.message
         };
       } else {
         // その他の予期せぬエラー
-        errorMessage = "予期せぬエラーが発生しました";
+        errorMessage = ERROR_MESSAGES.UNKNOWN;
         errorType = 'UNKNOWN_ERROR';
         if (error instanceof Error) {
           errorDetails = {
